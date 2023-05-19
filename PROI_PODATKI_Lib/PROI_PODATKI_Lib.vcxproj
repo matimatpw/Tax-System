@@ -18,6 +18,14 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="IncomeLib.h" />
+    <ClInclude Include="TaxSystemLib.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Income.cpp" />
+    <ClCompile Include="TaxSystem.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
