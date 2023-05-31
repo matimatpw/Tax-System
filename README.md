@@ -46,6 +46,26 @@ class Podatek:
       int x = v(Wplływ);
 
 
+class Interface:
+    TaxSystem(zawiera w sobie wszystkich klientów)
+
+    Konstruktor Klasy wywołuje powstanie TaxSystem  
+
+
+Wygląd aplikacji:
+
+switch()
+-> Dodaj Wpływ
+-> Dodaj Klienta
+:  - Podaj ID Klienta (std::cin)
+:  - Nazwa
+:  - itd.
+-> Wyszukaj Po (ID, wplywie ...)
+-> Dodaj Klienta
+-> Oznacz jako zaplacone
+-> Zapisywanie do Pliku (.json)
+
+
 
     
 
