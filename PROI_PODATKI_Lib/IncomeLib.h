@@ -9,5 +9,6 @@ struct Income
 	Tax tax;
 	size_t id;
 	int toPay;
+	bool paid = false;
 };
 
