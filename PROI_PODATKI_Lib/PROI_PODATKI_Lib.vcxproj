@@ -19,10 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Klient.h" />
     <ClInclude Include="Tax.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Tax.cpp" />
+    <ClCompile Include="Klient.cpp" />
+  </ItemGroup>
+  <ItemGroup>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
