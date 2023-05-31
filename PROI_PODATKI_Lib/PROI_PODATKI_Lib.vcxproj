@@ -27,7 +27,6 @@
   <ItemGroup>
     <ClCompile Include="Tax.cpp" />
     <ClCompile Include="Klient.cpp" />
-    <ClCompile Include="Income.cpp" />
     <ClCompile Include="TaxSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
