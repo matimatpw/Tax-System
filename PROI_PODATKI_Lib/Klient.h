@@ -1,40 +1,55 @@
 #pragma once
 #include <vector>
-// #include <Wplyw.h>
+#include "IncomeLib.h"
 
-class Podatek;
-class Wplyw;
+enum podatkiOsoby
+{
+	pit,
+	pon,
+	zusOsoba,
+};
+
+enum podatkiFirma
+{
+	vat,
+	cit,
+	zusFirma
+};
 
 class Klient
 {
 protected:
-	unsigned int ID;
-	std::vector<Wplyw> wplywy;
+	size_t ID;
+	std::vector<Income> wplywy;
 public:
-	unsigned int getID() const noexcept;
-	const std::vector<Wplyw>& getWplywy() const;
-	void setID(unsigned int new_id);
-	void dodajWplyw(Wplyw const& nowy_wplyw);
+	size_t getID() const noexcept;
+	const std::vector<Income>& getWplywy() const;
+	void setID(size_t new_id);
+	void dodajWplyw(Income const& nowy_wplyw);
 	double wyliczKwotePodatku() const;
+
+	void markPaid(size_t searchID);
+	bool hasIncome(size_t searchID);
 };
 
 class Osoba : public Klient
 {
 private:
-	std::vector<Podatek> podatki_osoby; // Beda odgornie ustalane
+	static std::vector<Tax*> podatki_osoby; // Beda odgornie ustalane
 
 public:
-	Osoba(unsigned int id, std::vector<Wplyw> wplywy_osoby);
-	const std::vector<Podatek>& getPodatkiOsoba() const;
+	Osoba(size_t id, std::vector<Income> wplywy_osoby);
+	const std::vector<Tax*>& getPodatkiOsoba() const;
 };
 
 
 class Firma : public Klient
 {
 private:
-	std::vector<Podatek> podatki_firmy;
+	 static std::vector<Tax*> podatki_firmy;
 
 public:
-	Firma(unsigned int id, std::vector<Wplyw> wplywy_firmy);
-	const std::vector<Podatek>& getPodatkiFirma() const;
+	Firma(size_t id, std::vector<Income> wplywy_firmy);
+	const std::vector<Tax*>& getPodatkiFirma() const;
 };
+

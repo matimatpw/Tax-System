@@ -2,55 +2,60 @@
 #include <stdexcept>
 
 
-template<typename Tax, typename Client>
-TaxSystem<Tax, Client>::TaxSystem()
+ 
+TaxSystem::TaxSystem()
 {
 }
 
-template<typename Tax, typename Client>
-TaxSystem<Tax, Client>::~TaxSystem()
+ 
+TaxSystem::~TaxSystem()
 {
 }
 
-template<typename Tax, typename Client>
-TaxSystem<Tax, Client>::TaxSystem(std::string path_to_file)
+ 
+TaxSystem::TaxSystem(std::string path_to_file)
 {
 }
 
-template<typename Tax, typename Client>
-void TaxSystem<Tax, Client>::addIncome(std::string clientID, int amount, Tax tax)
+
+void TaxSystem::addIncome(size_t clientID, double amount, Tax* tax)
 {
-	Client client = searchByClientID(clientID);
-	client.addIncome(amount, tax, currentIncomeID);
+	Klient client = searchByClientID(clientID);
+	Income newIncome = Income(amount, tax, currentIncomeID);
+	client.dodajWplyw(newIncome);
 	currentIncomeID++;
 }
-
-template<typename Tax, typename Client>
-Client& TaxSystem<Tax, Client>::searchByIncome(size_t searchID)
+ 
+Klient& TaxSystem::searchByIncome(size_t searchID)
 {
 	if (searchID > currentIncomeID)
 		throw std::runtime_error("No income of given ID");
-	for (Client client : clients)
-		for (Income income : client.incomes)
-			if (income.id == searchID)
-				return client;
+	for (Klient client : clients)
+		if (client.hasIncome(searchID))
+			return client;
 }
 
-template<typename Tax, typename Client>
-Client& TaxSystem<Tax, Client>::searchByClientID(size_t searchID)
+void TaxSystem::markPaid(size_t searchID)
 {
-	auto place = std::find_if(clients.begin(), clients.end(), [searchID](Client& client) {
-		return searchID == client.id;
+	Klient toMark = searchByIncome(searchID);
+	toMark.markPaid(searchID);
+}
+
+ 
+Klient& TaxSystem::searchByClientID(size_t searchID)
+{
+	auto place = std::find_if(clients.begin(), clients.end(), [searchID](Klient& client) {
+		return searchID == client.getID();
 		});
 	if (place == clients.end())
 		throw std::runtime_error("No client of given ID");
 }
 
-template<typename Tax, typename Client>
-void TaxSystem<Tax, Client>::deleteClientByID(size_t searchID)
+ 
+void TaxSystem::deleteClientByID(size_t searchID)
 {
-	auto place = std::find_if(clients.begin(), clients.end(), [searchID](Client& client) {
-		return searchID == client.id;
+	auto place = std::find_if(clients.begin(), clients.end(), [searchID](Klient& client) {
+		return searchID == client.getID();
 		});
 	if (place != clients.end())
 		clients.erase(place);
@@ -58,18 +63,22 @@ void TaxSystem<Tax, Client>::deleteClientByID(size_t searchID)
 		throw std::runtime_error("Client of given ID doesnt exist");
 }
 
-template<typename Tax, typename Client>
-void TaxSystem<Tax, Client>::addClient(const Client& newClient)
+ 
+void TaxSystem::addClient(const Klient& newClient)
 {
 	clients.push_back(newClient);
 }
 
-template<typename Tax, typename Client>
-int TaxSystem<Tax, Client>::calculateAllTaxes()
+void TaxSystem::writeToFile(std::string path_to_file) const noexcept
 {
-	int sum = 0;
-	for (Client client : clients)
-		sum += client.calculateAllTaxes();
+}
+
+ 
+double TaxSystem::calculateAllTaxes()
+{
+	double sum = 0;
+	for (Klient client : clients)
+		sum += client.wyliczKwotePodatku();
 	return sum;
 }
 
