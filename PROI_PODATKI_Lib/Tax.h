@@ -1,33 +1,35 @@
 #pragma once
 class Tax
 {
+    double income;
 public:
-	virtual float calculate_tax();
+    virtual double calculate_tax(double inc) = 0;
 };
 
 // FIRMA-----
 class Vat : public Tax {
 public:
-	float calculate_tax();
+    //double operator()(double inc);
+    // double inComeWithVat =  Vat(income)
+    double calculate_tax(double inc);
 };
 
 class Cit : public Tax {
-	float calculate_tax();
+    double calculate_tax(double inc);
 };
 
 
 // Osoba FIzyczna-----
 class Pit : public Tax {
-	float calculate_tax();
+    double calculate_tax(double inc);
 };
 
 class Pon : public Tax { //Podatek Od Nieruchomosci
-	float calculate_tax();
+    double calculate_tax(double inc);
 };
 
 
 //FIrma i Osoba Fizyczna
 class Zus : public Tax {
-	float calculate_tax();
+    double calculate_tax(double inc);
 };
-

@@ -16,13 +16,26 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tax.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Klient.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TaxSystemLib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IncomeLib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Tax.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Klient.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TaxSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

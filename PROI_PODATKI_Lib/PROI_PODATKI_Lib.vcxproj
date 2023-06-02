@@ -21,10 +21,13 @@
   <ItemGroup>
     <ClInclude Include="Klient.h" />
     <ClInclude Include="Tax.h" />
+    <ClInclude Include="IncomeLib.h" />
+    <ClInclude Include="TaxSystemLib.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Tax.cpp" />
     <ClCompile Include="Klient.cpp" />
+    <ClCompile Include="TaxSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>

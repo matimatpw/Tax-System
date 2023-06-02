@@ -1,0 +1,29 @@
+{
+    "Client_ID": {
+        "10001": {
+            "info": {
+                "Client_Name": "Marek Brzozowski",
+                "Client_Incomes": {
+                    "5000": 1500.0,
+                    "5001": 5500.0
+                }
+            }
+        },
+        "5001": {
+            "info": {
+                "Client_Name": "Darek Nowak",
+                "Client_Incomes": {
+                    "5000": 1500.0
+                }
+            }
+        },
+        "6005": {
+            "info": {
+                "Client_Name": "Eugeniusz Dabrowski",
+                "Client_Incomes": {
+                    "5001": 5500.0
+                }
+            }
+        }
+    }
+}
