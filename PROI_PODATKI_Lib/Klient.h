@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "IncomeLib.h"
+#include <string>
 
 enum podatkiOsoby
 {
@@ -19,10 +20,12 @@ enum podatkiFirma
 class Klient
 {
 protected:
+	std::string nazwa;
 	size_t ID;
 	std::vector<Income> wplywy;
 public:
 	size_t getID() const noexcept;
+	std::string getNazwa() const noexcept;
 	const std::vector<Income>& getWplywy() const;
 	void setID(size_t new_id);
 	void dodajWplyw(Income const& nowy_wplyw);
@@ -38,7 +41,7 @@ private:
 	static std::vector<Tax*> podatki_osoby; // Beda odgornie ustalane
 
 public:
-	Osoba(size_t id, std::vector<Income> wplywy_osoby);
+	Osoba(size_t id,std::string nazwa, std::vector<Income> wplywy_osoby);
 	const std::vector<Tax*>& getPodatkiOsoba() const;
 };
 
@@ -49,7 +52,7 @@ private:
 	 static std::vector<Tax*> podatki_firmy;
 
 public:
-	Firma(size_t id, std::vector<Income> wplywy_firmy);
+	Firma(size_t id, std::string nazwa, std::vector<Income> wplywy_firmy);
 	const std::vector<Tax*>& getPodatkiFirma() const;
 };
 

@@ -5,6 +5,11 @@ size_t Klient::getID() const noexcept
 	return ID;
 }
 
+std::string Klient::getNazwa() const noexcept
+{
+	return nazwa;
+}
+
 const std::vector<Income>& Klient::getWplywy() const
 {
 	return wplywy;
@@ -55,8 +60,9 @@ bool Klient::hasIncome(size_t searchID)
 	}
 }
 
-Osoba::Osoba(size_t id, std::vector<Income> wplywy_osoby)
+Osoba::Osoba(size_t id, std::string nazwa, std::vector<Income> wplywy_osoby)
 {
+	this->nazwa = nazwa;
 	this->ID = id;
 	this->wplywy = wplywy_osoby;
 }
@@ -66,8 +72,9 @@ const std::vector<Tax*>& Osoba::getPodatkiOsoba() const
 	return podatki_osoby;
 }
 
-Firma::Firma(size_t id, std::vector<Income> wplywy_firmy)
+Firma::Firma(size_t id, std::string nazwa, std::vector<Income> wplywy_firmy)
 {
+	this->nazwa = nazwa;
 	this->ID = id;
 	this->wplywy = wplywy_firmy;
 }
