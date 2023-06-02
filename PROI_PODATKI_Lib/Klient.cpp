@@ -30,7 +30,7 @@ void Klient::dodajWplyw(const Income& nowy_wplyw)
 double Klient::wyliczKwotePodatku() const
 {
 	double lacznaKwota = 0;
-	for (Income wplyw : wplywy)
+	for (auto& wplyw : wplywy)
 	{
 		lacznaKwota += wplyw.toPay;
 	}

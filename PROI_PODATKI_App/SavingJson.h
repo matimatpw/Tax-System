@@ -22,7 +22,7 @@ void saveToJson(std::string filename, std::vector<Klient>& client_base) {
 			client_info["info"]["Client_Incomes"][std::to_string(current_income.id)] = current_income.amount;
 		}
 
-		data_to_save["Client_ID " + std::to_string(client.getID())] = client_info;
+		data_to_save["Client_ID"][std::to_string(client.getID())] = client_info;
     }
 
 	std::ofstream file(filename);
