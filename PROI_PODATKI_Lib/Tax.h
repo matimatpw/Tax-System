@@ -1,7 +1,8 @@
 #pragma once
+#include <string>
+
 class Tax
 {
-    double income;
 public:
     virtual double calculate_tax(double inc) = 0;
 };

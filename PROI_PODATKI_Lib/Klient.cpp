@@ -1,4 +1,11 @@
 #include "Klient.h"
+std::vector<Tax*> Firma::podatki_firmy = { new Vat, new Cit, new Zus };
+std::vector<Tax*> Osoba::podatki_osoby = { new Pit, new Pon, new Zus };
+
+
+Klient::~Klient()
+{
+}
 
 size_t Klient::getID() const noexcept
 {
@@ -14,12 +21,6 @@ const std::vector<Income>& Klient::getWplywy() const
 {
 	return wplywy;
 }
-
-//void Klient::setID(size_t new_id)
-//{
-//	// TODO zaimplementowac opcje ktora sprawdza czy dane id nie znajduje sie juz w bazie
-//	this->ID = new_id; // TBH, idk czy jest sens zmieniac id klienta
-//}
 
 void Klient::dodajWplyw(const Income& nowy_wplyw)
 {
@@ -49,6 +50,7 @@ void Klient::markPaid(size_t searchID)
 	}
 }
 
+
 bool Klient::hasIncome(size_t searchID)
 {
 	for (Income& income : wplywy)
@@ -58,6 +60,7 @@ bool Klient::hasIncome(size_t searchID)
 			return true;
 		}
 	}
+	return false;
 }
 
 Osoba::Osoba(size_t id, std::string nazwa, std::vector<Income> wplywy_osoby)
@@ -84,5 +87,3 @@ const std::vector<Tax*>& Firma::getPodatkiFirma() const
 	return podatki_firmy;
 }
 
-std::vector<Tax*> Firma::podatki_firmy = { new Vat, new Cit, new Zus};
-std::vector<Tax*> Osoba::podatki_osoby = { new Pit, new Pon, new Zus };

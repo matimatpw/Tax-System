@@ -1,6 +1,5 @@
 ﻿#include "Tax.h"
 
-
 double Vat::calculate_tax(double income) {//23%
 
     return 1.23 * income;
