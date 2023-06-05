@@ -12,10 +12,10 @@ public:
 	TaxSystem(std::string path_to_file);
 
 	void addIncome(size_t clientID, double amount, Tax* tax, size_t id);
-	Klient* searchByIncome(size_t searchID);
+	Klient& searchByIncome(size_t searchID);
 	void markPaid(size_t searchID);
 	
-	Klient* searchByClientID(size_t searchID);
+	Klient& searchByClientID(size_t searchID);
 	void deleteClientByID(size_t searchID);
 	void addClient(Klient* newClient);
 
