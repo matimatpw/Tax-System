@@ -1,5 +1,6 @@
 #include "../PROI_PODATKI_Lib/TaxSystemLib.h"
 #include "SavingJson.h"
+#include "LoadingJson.h"
 #include <iostream>
 
 
@@ -21,8 +22,11 @@ int main()
 	clients.push_back(&Marek);
 	clients.push_back(&Darek);
 	clients.push_back(&Eugeniusz);
-	saveToJson("results.txt", clients);
+	saveToJson("results.json", clients);
 	return 0;
+
+	std::vector<Klient*> clients2;
+	loadFromJson("results.json", clients2);
 }
 
  // u¿ywane wczeœniej do testowania zapisu do pliku JSON
@@ -49,3 +53,28 @@ clients.push_back(Darek);
 clients.push_back(Eugeniusz);
 
 saveToJson("results.txt", clients); */
+
+// poprawki do polimorfizmu, testowanie wczytywania:
+/*
+	Osoba defaultOsoba(0, "null", {});
+	Income wplyw1(1500, defaultOsoba.getPodatkiOsoba()[pit], 5000);
+	Income wplyw2(5500, defaultOsoba.getPodatkiOsoba()[zusOsoba], 5001);
+
+	std::vector<Income> wplywy_Marka = { wplyw1, wplyw2 };
+	std::vector<Income> wplywy_Darka = { wplyw1 };
+	std::vector<Income> wplywy_Eugeniusza = { wplyw2 };
+
+	Osoba Marek(10001, "Marek Brzozowski", wplywy_Marka);
+	Osoba Darek(5001, "Darek Nowak", wplywy_Darka);
+	Osoba Eugeniusz(6005, "Eugeniusz Dabrowski", wplywy_Eugeniusza);
+
+	std::vector<Klient*> clients;
+	clients.push_back(&Marek);
+	clients.push_back(&Darek);
+	clients.push_back(&Eugeniusz);
+	saveToJson("results.json", clients);
+	return 0;
+
+	std::vector<Klient*> clients2;
+	loadFromJson("results.json", clients2);
+*/

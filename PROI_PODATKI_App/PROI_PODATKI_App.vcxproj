@@ -27,6 +27,7 @@
     <ClCompile Include="Application.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="LoadingJson.h" />
     <ClInclude Include="SavingJson.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
