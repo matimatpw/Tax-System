@@ -18,21 +18,19 @@ TaxSystem::TaxSystem(std::string path_to_file)
 }
 
 
-void TaxSystem::addIncome(size_t clientID, double amount, Tax* tax)
+void TaxSystem::addIncome(size_t clientID, double amount, Tax* tax, size_t id)
 {
 	Klient* client = searchByClientID(clientID);
-	Income newIncome = Income(amount, tax, currentIncomeID);
+	Income newIncome = Income(amount, tax, id);
 	client->dodajWplyw(newIncome);
-	currentIncomeID++;
 }
  
 Klient* TaxSystem::searchByIncome(size_t searchID)
 {
-	if (searchID > currentIncomeID)
-		throw std::runtime_error("No income of given ID");
 	for (Klient* client : clients)
 		if ((*client).hasIncome(searchID))
 			return client;
+	throw std::runtime_error("No income of given ID");
 }
 
 void TaxSystem::markPaid(size_t searchID)
