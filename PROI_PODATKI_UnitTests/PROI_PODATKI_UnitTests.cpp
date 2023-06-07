@@ -6,10 +6,10 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace PROIPODATKIUnitTests
 {
-	TEST_CLASS(KlientUnitTests)
+	TEST_CLASS(ClientUnitTests)
 	{
 	public:
-		TEST_METHOD(OsobaConstructorTest)
+		TEST_METHOD(PersonConstructorTest)
 		{
 			;
 		}

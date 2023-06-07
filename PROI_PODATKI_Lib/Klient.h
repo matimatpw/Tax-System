@@ -3,56 +3,55 @@
 #include "IncomeLib.h"
 #include <string>
 
-enum podatkiOsoby
+enum personTaxes
 {
 	pit,
 	pon,
 	zusOsoba,
 };
 
-enum podatkiFirma
+enum companyTaxes
 {
 	vat,
 	cit,
 	zusFirma
 };
 
-class Klient
+class Client
 {
 protected:
-	std::string nazwa;
+	std::string name;
 	size_t ID;
-	std::vector<Income> wplywy;
+	std::vector<Income> Incomes;
 public:
 	size_t getID() const noexcept;
-	std::string getNazwa() const noexcept;
-	const std::vector<Income>& getWplywy() const;
-	void setID(size_t new_id);
-	void dodajWplyw(Income const& nowy_wplyw);
-	double wyliczKwotePodatku() const;
+	std::string getName() const noexcept;
+	const std::vector<Income>& getIncomes() const;
+	void addIncome(Income const& nowy_wplyw);
+	double calculateTaxAmount() const;
 
 	void markPaid(size_t searchID);
 	bool hasIncome(size_t searchID);
 };
 
-class Osoba : public Klient
+class Person : public Client
 {
 private:
-	static std::vector<Tax*> podatki_osoby; // Beda odgornie ustalane
+	static std::vector<Tax*> person_taxes; // Beda odgornie ustalane
 
 public:
-	Osoba(size_t id,std::string nazwa, std::vector<Income> wplywy_osoby);
-	const std::vector<Tax*>& getPodatkiOsoba() const;
+	Person(size_t id,std::string name, std::vector<Income> person_incomes);
+	const std::vector<Tax*>& getPersonTaxes() const;
 };
 
 
-class Firma : public Klient
+class Company : public Client
 {
 private:
-	 static std::vector<Tax*> podatki_firmy;
+	 static std::vector<Tax*> company_taxes;
 
 public:
-	Firma(size_t id, std::string nazwa, std::vector<Income> wplywy_firmy);
-	const std::vector<Tax*>& getPodatkiFirma() const;
+	Company(size_t id, std::string name, std::vector<Income> company_incomes);
+	const std::vector<Tax*>& getCompanyTaxes() const;
 };
 

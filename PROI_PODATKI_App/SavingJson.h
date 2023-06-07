@@ -6,15 +6,15 @@
 
 using ordered_json = nlohmann::ordered_json;
 
-void saveToJson(std::string filename, std::vector<Klient>& client_base) {
+void saveToJson(std::string filename, std::vector<Client>& client_base) {
     ordered_json data_to_save;
 
     for (auto const& client : client_base) {
-        std::vector<Income> client_incomes = client.getWplywy();
+        std::vector<Income> client_incomes = client.getIncomes();
 
         ordered_json client_info;
 
-		client_info["info"]["Client_Name"] = client.getNazwa();
+		client_info["info"]["Client_Name"] = client.getName();
 
 		for (int i = 0; i <= client_incomes.size() - 1; ++i)
 		{

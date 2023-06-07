@@ -1,45 +1,39 @@
 #include "Klient.h"
 
-size_t Klient::getID() const noexcept
+size_t Client::getID() const noexcept
 {
 	return ID;
 }
 
-std::string Klient::getNazwa() const noexcept
+std::string Client::getName() const noexcept
 {
-	return nazwa;
+	return name;
 }
 
-const std::vector<Income>& Klient::getWplywy() const
+const std::vector<Income>& Client::getIncomes() const
 {
-	return wplywy;
+	return Incomes;
 }
 
-//void Klient::setID(size_t new_id)
-//{
-//	// TODO zaimplementowac opcje ktora sprawdza czy dane id nie znajduje sie juz w bazie
-//	this->ID = new_id; // TBH, idk czy jest sens zmieniac id klienta
-//}
-
-void Klient::dodajWplyw(const Income& nowy_wplyw)
+void Client::addIncome(const Income& nowy_wplyw)
 {
-	wplywy.push_back(nowy_wplyw);
+	Incomes.push_back(nowy_wplyw);
 }
 
 
-double Klient::wyliczKwotePodatku() const
+double Client::calculateTaxAmount() const
 {
 	double lacznaKwota = 0;
-	for (auto& wplyw : wplywy)
+	for (auto& wplyw : Incomes)
 	{
 		lacznaKwota += wplyw.toPay;
 	}
 	return lacznaKwota;
 }
 
-void Klient::markPaid(size_t searchID)
+void Client::markPaid(size_t searchID)
 {
-	for (Income& income : wplywy)
+	for (Income& income : Incomes)
 	{
 		if (income.id == searchID)
 		{
@@ -49,9 +43,9 @@ void Klient::markPaid(size_t searchID)
 	}
 }
 
-bool Klient::hasIncome(size_t searchID)
+bool Client::hasIncome(size_t searchID)
 {
-	for (Income& income : wplywy)
+	for (Income& income : Incomes)
 	{
 		if (income.id == searchID)
 		{
@@ -60,29 +54,29 @@ bool Klient::hasIncome(size_t searchID)
 	}
 }
 
-Osoba::Osoba(size_t id, std::string nazwa, std::vector<Income> wplywy_osoby)
+Person::Person(size_t id, std::string nazwa, std::vector<Income> wplywy_osoby)
 {
-	this->nazwa = nazwa;
+	this->name = nazwa;
 	this->ID = id;
-	this->wplywy = wplywy_osoby;
+	this->Incomes = wplywy_osoby;
 }
 
-const std::vector<Tax*>& Osoba::getPodatkiOsoba() const
+const std::vector<Tax*>& Person::getPersonTaxes() const
 {
-	return podatki_osoby;
+	return person_taxes;
 }
 
-Firma::Firma(size_t id, std::string nazwa, std::vector<Income> wplywy_firmy)
+Company::Company(size_t id, std::string nazwa, std::vector<Income> wplywy_firmy)
 {
-	this->nazwa = nazwa;
+	this->name = nazwa;
 	this->ID = id;
-	this->wplywy = wplywy_firmy;
+	this->Incomes = wplywy_firmy;
 }
 
-const std::vector<Tax*>& Firma::getPodatkiFirma() const
+const std::vector<Tax*>& Company::getCompanyTaxes() const
 {
-	return podatki_firmy;
+	return company_taxes;
 }
 
-std::vector<Tax*> Firma::podatki_firmy = { new Vat, new Cit, new Zus};
-std::vector<Tax*> Osoba::podatki_osoby = { new Pit, new Pon, new Zus };
+std::vector<Tax*> Company::company_taxes = { new Vat, new Cit, new Zus};
+std::vector<Tax*> Person::person_taxes = { new Pit, new Pon, new Zus };
