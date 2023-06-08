@@ -1,4 +1,6 @@
 #include "Klient.h"
+#include <iostream>
+#include <exception>
 
 size_t Client::getID() const noexcept
 {
@@ -10,25 +12,25 @@ std::string Client::getName() const noexcept
 	return name;
 }
 
-const std::vector<Income>& Client::getIncomes() const
+std::vector<Income> Client::getIncomes() const
 {
 	return Incomes;
 }
 
-void Client::addIncome(const Income& nowy_wplyw)
+void Client::addIncome(const Income& new_income)
 {
-	Incomes.push_back(nowy_wplyw);
+	Incomes.push_back(new_income);
 }
 
 
 double Client::calculateTaxAmount() const
 {
-	double lacznaKwota = 0;
+	double sum = 0;
 	for (auto& wplyw : Incomes)
 	{
-		lacznaKwota += wplyw.toPay;
+		sum += wplyw.toPay;
 	}
-	return lacznaKwota;
+	return sum;
 }
 
 void Client::markPaid(size_t searchID)
@@ -54,14 +56,18 @@ bool Client::hasIncome(size_t searchID)
 	}
 }
 
-Person::Person(size_t id, std::string nazwa, std::vector<Income> wplywy_osoby)
+Person::Person(size_t id, std::string name, std::vector<Income> wplywy_osoby)
 {
-	this->name = nazwa;
+	if (name.empty())
+		throw std::runtime_error("Name cannot be empty");
+	if (name.find_first_of("0123456789") != std::string::npos)
+		throw std::runtime_error("There can't be any numbers in Person's name");
+	this->name = name;
 	this->ID = id;
 	this->Incomes = wplywy_osoby;
 }
 
-const std::vector<Tax*>& Person::getPersonTaxes() const
+std::vector<Tax*> Person::getPersonTaxes() const
 {
 	return person_taxes;
 }
@@ -73,7 +79,7 @@ Company::Company(size_t id, std::string nazwa, std::vector<Income> wplywy_firmy)
 	this->Incomes = wplywy_firmy;
 }
 
-const std::vector<Tax*>& Company::getCompanyTaxes() const
+std::vector<Tax*> Company::getCompanyTaxes() const
 {
 	return company_taxes;
 }

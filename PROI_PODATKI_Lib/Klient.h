@@ -22,11 +22,11 @@ class Client
 protected:
 	std::string name;
 	size_t ID;
-	std::vector<Income> Incomes;
+	std::vector<Income> Incomes{};
 public:
 	size_t getID() const noexcept;
 	std::string getName() const noexcept;
-	const std::vector<Income>& getIncomes() const;
+	std::vector<Income> getIncomes() const;
 	void addIncome(Income const& nowy_wplyw);
 	double calculateTaxAmount() const;
 
@@ -40,8 +40,8 @@ private:
 	static std::vector<Tax*> person_taxes; // Beda odgornie ustalane
 
 public:
-	Person(size_t id,std::string name, std::vector<Income> person_incomes);
-	const std::vector<Tax*>& getPersonTaxes() const;
+	Person(size_t id, std::string name, std::vector<Income> person_incomes = {});
+	std::vector<Tax*> getPersonTaxes() const;
 };
 
 
@@ -51,7 +51,7 @@ private:
 	 static std::vector<Tax*> company_taxes;
 
 public:
-	Company(size_t id, std::string name, std::vector<Income> company_incomes);
-	const std::vector<Tax*>& getCompanyTaxes() const;
+	Company(size_t id, std::string name, std::vector<Income> company_incomes = {});
+	std::vector<Tax*> getCompanyTaxes() const;
 };
 
