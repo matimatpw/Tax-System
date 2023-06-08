@@ -2,13 +2,16 @@
 
 #include <iostream>
 
-Klient createClient(int my_choice) {
+Klient createClient(int my_choice, size_t& index_XD) {
+	
 	if (my_choice == 1) {
-		Osoba client(2, {});
+		Osoba client(size_t(index_XD), {});
+		index_XD++;
 		return client;
 	}
 	else if (my_choice == 2) {
-		Firma client(2, {});
+		Firma client(size_t(index_XD), {});
+		index_XD++;
 		return client;
 	}
 	else {
@@ -27,10 +30,11 @@ void print_output() {
 
 int main()
 {
+	size_t my_idx = 0;
 	TaxSystem system;
-	bool is_valid = false;
+	bool is_valid;
 	do {
-
+		is_valid = false;
 
 		int choice = 0;
 		std::cout << "Hi, what would you like to do today? Choose one of the options below: \n";
@@ -54,7 +58,8 @@ int main()
 				std::cin >> choice;
 				
 				try {
-					Klient client = createClient(choice);
+					Klient client = createClient(choice, my_idx);
+					system.addClient(client);
 					is_valid = true;
 
 				}
