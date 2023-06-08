@@ -26,6 +26,15 @@ namespace PROIPODATKIUnitTests
 			Assert::ExpectException<std::runtime_error>([] {Person p1(21, "ABc12D"); });
 		}
 
+		/*TEST_METHOD(TryingToCreateClientWithSameID)
+		{
+			// TODO this test should pass
+				
+			Person p1(21, "xyz");
+			Person p2(214, "xsyz");
+			Assert::ExpectException<std::runtime_error>([] {Person p3(21, "abc"); });
+		}*/
+
 		TEST_METHOD(CreatePersonAndAddIncome)
 		{
 			Person p1(21, "xyz");

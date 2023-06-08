@@ -22,11 +22,13 @@ class Client
 protected:
 	std::string name;
 	size_t ID;
+	static std::vector<size_t> ID_base;
 	std::vector<Income> Incomes{};
 public:
 	size_t getID() const noexcept;
 	std::string getName() const noexcept;
 	std::vector<Income> getIncomes() const;
+	bool isInIDBase(size_t id) const noexcept;
 	void addIncome(Income const& nowy_wplyw);
 	double calculateTaxAmount() const;
 
