@@ -58,14 +58,44 @@ namespace PROIPODATKIUnitTests
 
 		TEST_METHOD(CreateCompanyAndAddIncomes)
 		{
-			Company p1(21, "xyz");
-			Income new_inc(5000, p1.getCompanyTaxes()[cit], 213);
+			Company c1(21, "xyz");
+			Income new_inc(5000, c1.getCompanyTaxes()[cit], 213);
 			Assert::AreEqual(950, new_inc.toPay, 0.01);
-			p1.addIncome(new_inc);
-			Income sec_inc(25000, p1.getCompanyTaxes()[cit], 214);
-			p1.addIncome(sec_inc);
+			c1.addIncome(new_inc);
+			Income sec_inc(25000, c1.getCompanyTaxes()[cit], 214);
+			c1.addIncome(sec_inc);
 
-			Assert::AreEqual(950 + 4750, p1.calculateTaxAmount(), 0.01);
+			Assert::AreEqual(950 + 4750, c1.calculateTaxAmount(), 0.01);
+		}
+
+		TEST_METHOD(MarkIncomeAsPaid)
+		{
+			Company c1(21, "xyz");
+			Income new_inc(5000, c1.getCompanyTaxes()[cit], 213);
+			c1.addIncome(new_inc);
+
+			Income before = c1.getIncomes()[0];
+
+			Assert::IsFalse(before.paid);
+
+			c1.markPaid(213);
+
+			Income after_paid_tax = c1.getIncomes()[0];
+
+			Assert::IsTrue(after_paid_tax.paid);
+		}
+
+		TEST_METHOD(CheckWhetherClientHasIncome)
+		{
+			Company c1(21, "xyz");
+			Income new_inc(5000, c1.getCompanyTaxes()[cit], 213);
+
+			Assert::IsFalse(c1.hasIncome(213));
+
+			c1.addIncome(new_inc);
+			
+			Assert::IsTrue(c1.hasIncome(213));
+
 		}
 	};
 	TEST_CLASS(PROIPODATKIUnitTests)
