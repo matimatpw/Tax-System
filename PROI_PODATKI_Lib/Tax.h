@@ -26,7 +26,7 @@ public:
     double operator()(double inc);
 };
 
-class Pon : public Tax { //Podatek Od Nieruchomosci
+class Pon : public Tax {
 public:
     double operator()(double inc);
 };

@@ -15,7 +15,7 @@ enum podatkiFirma
 	cit,
 	zusFirma
 };
-
+//TODO zrobic tak zeby to w kliencie ustalane bylo automatycznie ID (zeby nie trzeba bylo tego robic w aplikacji w aplikacji)
 class Klient
 {
 protected:
