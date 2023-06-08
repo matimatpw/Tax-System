@@ -3,7 +3,7 @@
 
 struct Income
 {
-	Income(double amount, Tax* tax, size_t id) : tax(tax), amount(amount), id(id), toPay(tax->calculate_tax(amount)) {};
+	Income(double amount, Tax* tax, size_t id) : tax(tax), amount(amount), id(id), toPay(tax->operator()(amount)) {};//TODO operator()?
 
 	double amount;
 	Tax* tax;
