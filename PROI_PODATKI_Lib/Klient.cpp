@@ -1,40 +1,51 @@
 #include "Klient.h"
+#include <iostream>
+#include <exception>
 
-size_t Klient::getID() const noexcept
+size_t Client::getID() const noexcept
 {
 	return ID;
 }
 
-const std::vector<Income>& Klient::getWplywy() const
+std::string Client::getName() const noexcept
 {
-	return wplywy;
+	return name;
 }
 
-//void Klient::setID(size_t new_id)
-//{
-//	// TODO zaimplementowac opcje ktora sprawdza czy dane id nie znajduje sie juz w bazie
-//	this->ID = new_id; // TBH, idk czy jest sens zmieniac id klienta
-//}
-
-void Klient::dodajWplyw(const Income& nowy_wplyw)
+bool Client::isInIDBase(size_t id) const noexcept
 {
-	wplywy.push_back(nowy_wplyw);
-}
-
-
-double Klient::wyliczKwotePodatku() const
-{
-	double lacznaKwota = 0;
-	for (Income wplyw : wplywy)
+	for (auto& base_id : ID_base)
 	{
-		lacznaKwota += wplyw.toPay;
+		if (base_id == id)
+			return true;
 	}
-	return lacznaKwota;
+	return false;
 }
 
-void Klient::markPaid(size_t searchID)
+std::vector<Income> Client::getIncomes() const
 {
-	for (Income& income : wplywy)
+	return Incomes;
+}
+
+void Client::addIncome(const Income& new_income)
+{
+	Incomes.push_back(new_income);
+}
+
+
+double Client::calculateTaxAmount() const
+{
+	double sum = 0;
+	for (auto& wplyw : Incomes)
+	{
+		sum += wplyw.toPay;
+	}
+	return sum;
+}
+
+void Client::markPaid(size_t searchID)
+{
+	for (Income& income : Incomes)
 	{
 		if (income.id == searchID)
 		{
@@ -44,9 +55,9 @@ void Klient::markPaid(size_t searchID)
 	}
 }
 
-bool Klient::hasIncome(size_t searchID)
+bool Client::hasIncome(size_t searchID)
 {
-	for (Income& income : wplywy)
+	for (Income& income : Incomes)
 	{
 		if (income.id == searchID)
 		{
@@ -55,27 +66,41 @@ bool Klient::hasIncome(size_t searchID)
 	}
 }
 
-Osoba::Osoba(size_t id, std::vector<Income> wplywy_osoby)
+Person::Person(size_t id, std::string name, std::vector<Income> wplywy_osoby)
 {
+	if (name.empty())
+		throw std::runtime_error("Name cannot be empty");
+	if (name.find_first_of("0123456789") != std::string::npos)
+		throw std::runtime_error("There can't be any numbers in Person's name");
+	//TODO implement this method
+	/*if (isInIDBase(id)) 
+		throw std::runtime_error("ID is already in the base");*/
+	this->name = name;
 	this->ID = id;
-	this->wplywy = wplywy_osoby;
+	/*ID_base.push_back(id);*/
+	this->Incomes = wplywy_osoby;
 }
 
-const std::vector<Tax*>& Osoba::getPodatkiOsoba() const
+std::vector<Tax*> Person::getPersonTaxes() const
 {
-	return podatki_osoby;
+	return person_taxes;
 }
 
-Firma::Firma(size_t id, std::vector<Income> wplywy_firmy)
+Company::Company(size_t id, std::string name, std::vector<Income> wplywy_firmy)
 {
+	if (name.empty())
+		throw std::runtime_error("Name cannot be empty");
+	this->name = name;
 	this->ID = id;
-	this->wplywy = wplywy_firmy;
+	/*ID_base.push_back(id);*/
+	this->Incomes = wplywy_firmy;
 }
 
-const std::vector<Tax*>& Firma::getPodatkiFirma() const
+std::vector<Tax*> Company::getCompanyTaxes() const
 {
-	return podatki_firmy;
+	return company_taxes;
 }
 
-std::vector<Tax*> Firma::podatki_firmy = { new Vat, new Cit, new Zus};
-std::vector<Tax*> Osoba::podatki_osoby = { new Pit, new Pon, new Zus };
+std::vector<Tax*> Company::company_taxes = { new Vat, new Cit, new Zus};
+std::vector<Tax*> Person::person_taxes = { new Pit, new Pon, new Zus };
+std::vector<size_t> Client::ID_base = {};

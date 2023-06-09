@@ -8,9 +8,9 @@ double Vat::operator()(double income) {
 double Pit::operator()(double income)
 {
     if (income >= 85528) {
-        return 0.17 * income;
+        return 0.32 * income;
     }
-    return 0.32 * income;
+    return 0.17 * income;
 }
 
 double Cit::operator()(double income)//19%
@@ -20,7 +20,7 @@ double Cit::operator()(double income)//19%
 
 double Pon::operator()(double income)
 {
-    return 0.10f;
+    return 0.10 * income;
 }
 
 double Zus::operator()(double income)

@@ -1,16 +1,16 @@
 #include "../PROI_PODATKI_Lib/TaxSystemLib.h"
-
+#include "SavingJson.h"
 #include <iostream>
 
-Klient createClient(int my_choice, size_t& index_XD) {
+Client createClient(int my_choice, size_t& index_XD) {
 	
 	if (my_choice == 1) {
-		Osoba client(size_t(index_XD), {});
+		Person client(size_t(index_XD), {});
 		index_XD++;
 		return client;
 	}
 	else if (my_choice == 2) {
-		Firma client(size_t(index_XD), {});
+		Company client(size_t(index_XD), {});
 		index_XD++;
 		return client;
 	}
@@ -58,7 +58,7 @@ int main()
 				std::cin >> choice;
 				
 				try {
-					Klient client = createClient(choice, my_idx);
+					Client client = createClient(choice, my_idx);
 					system.addClient(client);
 					is_valid = true;
 
