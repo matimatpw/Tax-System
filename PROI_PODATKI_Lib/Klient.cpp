@@ -66,6 +66,11 @@ bool Client::hasIncome(size_t searchID)
 	}
 }
 
+//void Client::displayInfo(std::ostream& os) const
+//{
+//	
+//}
+
 
 
 
@@ -133,11 +138,11 @@ void Company::displayInfo(std::ostream& os) const
 	os << "ID >" << this->getID() << "\n";
 	os << "Income info :" << "\n";
 }
-std::ostream& operator<<(std::ostream& os, const Client& my_client)
-{
-	my_client.displayInfo(os);
-	return os;
-}
+//std::ostream& operator<<(std::ostream& os, const Client& my_client)
+//{
+//	my_client.displayInfo(os);
+//	return os;
+//}
 
 
 

@@ -17,12 +17,12 @@ enum companyTaxes
 	zusFirma
 };
 
-class IOClient {
-public:
-	virtual void displayInfo(std::ostream& os)const =0;
-};
+//class IOClient {
+//public:
+//	virtual void displayInfo(std::ostream& os)const =0;
+//};
 
-class Client : public IOClient
+class Client /*: public IOClient*/
 {
 protected:
 	std::string name;
@@ -40,9 +40,9 @@ public:
 	void markPaid(size_t searchID);
 	bool hasIncome(size_t searchID);
 
+	/*void displayInfo(std::ostream& os) const;*/
 	
-	
-	friend std::ostream& operator<<(std::ostream& os, const Client& my_client);
+	//friend std::ostream& operator<<(std::ostream& os, const Client& my_client);
 
 	//std::ostream& readIncome(std::ostream& os);
 };
@@ -56,7 +56,7 @@ public:
 	Person(size_t id, std::string name, std::vector<Income> person_incomes = {});
 	std::vector<Tax*> getPersonTaxes() const;
 
-	void displayInfo(std::ostream& os) const override;
+	void displayInfo(std::ostream& os) const;
 	
 };
 
@@ -70,6 +70,6 @@ public:
 	Company(size_t id, std::string name, std::vector<Income> company_incomes = {});
 	std::vector<Tax*> getCompanyTaxes() const;
 
-	void displayInfo(std::ostream& os) const override;
+	void displayInfo(std::ostream& os) const;
 };
 

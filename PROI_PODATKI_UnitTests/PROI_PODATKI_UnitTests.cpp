@@ -142,7 +142,7 @@ namespace PROIPODATKIUnitTests
 		TEST_METHOD(Taxtest)
 		{
 			Tax* tax_ptr = new Vat;
-			Assert::AreEqual(double(12), tax_ptr->operator()(120));
+			Assert::AreEqual(double(27.6), tax_ptr->operator()(120));
 			delete tax_ptr;
 			
 		}

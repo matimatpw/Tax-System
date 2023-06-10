@@ -3,22 +3,42 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-void displayClientInfo(Client& my_client) {
+std::ostream& displayClientInfo(std::ostream& os, Client& my_client) {
+	os << "Nazwa >" << my_client.getName() << "\n";
+	os << "ID >" << my_client.getID() << "\n";
+	os << "Income info :" << "\n";
+	
+	int i = 0;
+	int MAX_ITER = 3;
+	for (auto& income : my_client.getIncomes()){
+		os << ">ID - " << income.id << "\n";
+		os << ">Amount - " << income.amount << "\n";
+		os << ">Tax - " << income.toPay <<"\n";
+		os << ">Is tax paid - ";
+		os << ((income.paid) ? "Yes\n" : "No\n");
+		os << std::endl;
+	}
+	os << "Full Tax> " << my_client.calculateTaxAmount() << "\n";
 
+	return os;
 }
-std::unique_ptr<Client> createClient(int my_choice, size_t& index_XD) {
+
+Client createClient(int my_choice, size_t& index_XD) {
 	std::string name;
 	if (my_choice == 1) {
 		std::cout << "Wprowadz Imie i Nazwisko\n> ";
 		std::getline(std::cin, name);
-		std::unique_ptr<Client> client = std::make_unique<Person>(index_XD, name);		
+		Person client(size_t(index_XD),name, {});
+		//test---
+		
+		//---
 		index_XD++;
 		return client;
 	}
 	else if (my_choice == 2) {
 		std::cout << "Wprowadz nazwe Firmy\n> ";
 		std::getline(std::cin, name);
-		std::unique_ptr<Client> client = std::make_unique<Company>(index_XD, name);
+		Company client(size_t(index_XD),name, {});
 		index_XD++;
 		return client;
 	}
@@ -56,7 +76,19 @@ int main()
 
 	//here for tersting
 	Person a(69, "xd", {});
+	Income new_inc(500, a.getPersonTaxes()[cit], 20);
+	a.addIncome(new_inc);
 	system.addClient(a);
+
+	Company b(70, "company", {});
+	Income new_inc2(600, b.getCompanyTaxes()[cit], 30);
+	Income new_inc3(600, b.getCompanyTaxes()[cit], 31);
+	//system.addIncome(new_inc3);
+	system.addClient(b);
+
+	//system.addIncome(69,500,a.getPersonTaxes()[cit]);
+	system.addIncome(70,100,b.getCompanyTaxes()[cit]);
+	//-----
 
 
 
@@ -137,10 +169,9 @@ int main()
 				std::cin >> my_id;
 				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore newline
 				try {
-					Client client = findClient(choice, my_id, system);
+					Client client = findClient(choice, my_id, system);//tutaj
 					is_valid = true;
-					std::cout << client;
-
+					displayClientInfo(std::cout, client);
 				}
 				catch (std::runtime_error r) {
 					std::cout << r.what() << std::endl;

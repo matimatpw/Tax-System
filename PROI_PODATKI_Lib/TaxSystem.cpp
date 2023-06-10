@@ -20,7 +20,7 @@ TaxSystem::TaxSystem(std::string path_to_file)
 
 void TaxSystem::addIncome(size_t clientID, double amount, Tax* tax)
 {
-	Client client = searchByClientID(clientID);
+	Client& client = searchByClientID(clientID);
 	Income newIncome = Income(amount, tax, currentIncomeID);
 	client.addIncome(newIncome);
 	currentIncomeID++;
