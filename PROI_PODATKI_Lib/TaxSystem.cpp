@@ -49,6 +49,7 @@ Client& TaxSystem::searchByClientID(size_t searchID)
 		});
 	if (place == clients.end())
 		throw std::runtime_error("No client of given ID");
+	return (*place);// XDDD
 }
 
  
@@ -57,8 +58,10 @@ void TaxSystem::deleteClientByID(size_t searchID)
 	auto place = std::find_if(clients.begin(), clients.end(), [searchID](Client& client) {
 		return searchID == client.getID();
 		});
-	if (place != clients.end())
+	if (place != clients.end()) {
+		
 		clients.erase(place);
+	}
 	else
 		throw std::runtime_error("Client of given ID doesnt exist");
 }

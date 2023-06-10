@@ -66,6 +66,15 @@ bool Client::hasIncome(size_t searchID)
 	}
 }
 
+
+
+
+
+//std::ostream& Client::readIncome(std::ostream& os)
+//{
+//	return os;
+//}
+
 Person::Person(size_t id, std::string name, std::vector<Income> wplywy_osoby)
 {
 	if (name.empty())
@@ -86,6 +95,20 @@ std::vector<Tax*> Person::getPersonTaxes() const
 	return person_taxes;
 }
 
+
+
+
+void Person::displayInfo(std::ostream& os) const
+{
+	os << "Imie i Nazwisko >" << this->getName() << "\n";
+	os << "ID >" << this->getID() << "\n";
+	os << "Income info :" << "\n";
+
+}
+
+
+
+
 Company::Company(size_t id, std::string name, std::vector<Income> wplywy_firmy)
 {
 	if (name.empty())
@@ -101,6 +124,25 @@ std::vector<Tax*> Company::getCompanyTaxes() const
 	return company_taxes;
 }
 
+
+
+
+void Company::displayInfo(std::ostream& os) const
+{
+	os << "Nazwa Firmy >" << this->getName() << "\n";
+	os << "ID >" << this->getID() << "\n";
+	os << "Income info :" << "\n";
+}
+std::ostream& operator<<(std::ostream& os, const Client& my_client)
+{
+	my_client.displayInfo(os);
+	return os;
+}
+
+
+
 std::vector<Tax*> Company::company_taxes = { new Vat, new Cit, new Zus};
 std::vector<Tax*> Person::person_taxes = { new Pit, new Pon, new Zus };
 std::vector<size_t> Client::ID_base = {};
+
+

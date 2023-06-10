@@ -105,4 +105,46 @@ namespace PROIPODATKIUnitTests
 		{
 		}
 	};
+	TEST_CLASS(PROITax)
+	{
+	public:
+
+		TEST_METHOD(Vattest)
+		{
+			Vat tax;
+			Assert::AreEqual(double(23), tax(100));
+		}
+		TEST_METHOD(Pittest)
+		{
+			Pit tax;
+			Assert::AreEqual(double(17), tax(100));
+		}
+		TEST_METHOD(Pitovertest)
+		{
+			Pit tax;
+			Assert::AreEqual(double(27368.96), tax(85528));
+		}
+		TEST_METHOD(Cittest)
+		{
+			Cit tax;
+			Assert::AreEqual(double(19), tax(100));
+		}
+		TEST_METHOD(Pontest)
+		{
+			Pon tax;
+			Assert::AreEqual(double(10), tax(100));
+		}
+		TEST_METHOD(Zustest)
+		{
+			Zus tax;
+			Assert::AreEqual(double(72.52), tax(100));
+		}
+		TEST_METHOD(Taxtest)
+		{
+			Tax* tax_ptr = new Vat;
+			Assert::AreEqual(double(12), tax_ptr->operator()(120));
+			delete tax_ptr;
+			
+		}
+	};
 }

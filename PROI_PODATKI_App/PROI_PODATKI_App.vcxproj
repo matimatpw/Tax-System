@@ -83,16 +83,16 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\karol\source\repos\23L-PROI-PROJ-5-Matukiewicz-Mateusz-Walecki-Przemyslaw\single_include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\mateu\source\repos\23L-PROI-PROJ-5-Matukiewicz-Mateusz-Walecki-Przemyslaw\single_include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\Users\karol\source\repos\23L-PROI-PROJ-5-Matukiewicz-Mateusz-Walecki-Przemyslaw\single_include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\mateu\source\repos\23L-PROI-PROJ-5-Matukiewicz-Mateusz-Walecki-Przemyslaw\single_include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\karol\source\repos\23L-PROI-PROJ-5-Matukiewicz-Mateusz-Walecki-Przemyslaw\single_include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\mateu\source\repos\23L-PROI-PROJ-5-Matukiewicz-Mateusz-Walecki-Przemyslaw\single_include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\Users\karol\source\repos\23L-PROI-PROJ-5-Matukiewicz-Mateusz-Walecki-Przemyslaw\single_include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\mateu\source\repos\23L-PROI-PROJ-5-Matukiewicz-Mateusz-Walecki-Przemyslaw\single_include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
