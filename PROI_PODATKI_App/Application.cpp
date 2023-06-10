@@ -103,6 +103,7 @@ int main()
 		std::cout << "2 -> Remove Client \n";//by ID
 		std::cout << "3 -> Add Income \n";
 		std::cout << "4 -> Search Client \n";//by (income or client) ID
+		std::cout << "5 -> Save CLients To Json File \n";
 		std::cout << "> ";
 		std::cin >> choice;
 
@@ -174,6 +175,28 @@ int main()
 					Client client = findClient(choice, my_id, system);//tutaj
 					is_valid = true;
 					displayClientInfo(std::cout, client);
+				}
+				catch (std::runtime_error r) {
+					std::cout << r.what() << std::endl;
+				}
+				catch (std::invalid_argument e) {
+					std::cout << e.what() << std::endl;
+				}
+			}
+			print_output();
+			break;
+		}
+		case 5:
+		{
+			while (!is_valid) {
+				std::string filename{};
+				std::cout << "Podaj nazwe pliku do ktorego chcesz zapisac dane:\n";
+				std::cin >> filename;
+				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore newline
+				try {
+					
+					saveToJson(filename, system.get_clients_base());
+					is_valid = true;
 				}
 				catch (std::runtime_error r) {
 					std::cout << r.what() << std::endl;

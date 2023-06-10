@@ -1,0 +1,21 @@
+{
+    "Client_ID": {
+        "69": {
+            "info": {
+                "Client_Name": "xd",
+                "Client_Incomes": {
+                    "0": 101.0
+                }
+            }
+        },
+        "70": {
+            "info": {
+                "Client_Name": "company",
+                "Client_Incomes": {
+                    "1": 202.0,
+                    "2": 303.0
+                }
+            }
+        }
+    }
+}
