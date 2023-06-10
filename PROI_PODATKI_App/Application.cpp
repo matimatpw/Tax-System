@@ -48,7 +48,7 @@ Client createClient(int my_choice, size_t& index_XD) {
 
 }
 
-Client findClient(int my_choice, size_t id, TaxSystem& my_system) {
+Client& findClient(int my_choice, size_t id, TaxSystem& my_system) {
 	if (my_choice == 1) {
 		return my_system.searchByIncome(id);
 	}
@@ -152,10 +152,14 @@ int main()
 		}
 		case 3:
 		{
+			double my_amount;
 			while (!is_valid) {
 				
 				std::cout << "Wprowadz ID klienta: \n> ";//TODO  funkcja addIncome , nwm jak podawac tax.?
 				std::cin >> my_id;
+				//tutaj zapytac jaki podatek klient chce uwzglednic w przychodzie
+				std::cout << "Wprowadz kwote przychodu: \n> ";//TODO  funkcja addIncome , nwm jak podawac tax.?
+				std::cin >> my_amount;
 				is_valid = true;
 			}
 			print_output();
@@ -173,7 +177,7 @@ int main()
 				std::cin >> my_id;
 				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore newline
 				try {
-					Client client = findClient(choice, my_id, system);//tutaj
+					Client& client = findClient(choice, my_id, system);//tutaj
 					is_valid = true;
 					displayClientInfo(std::cout, client);
 				}
