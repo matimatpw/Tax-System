@@ -80,7 +80,7 @@ void TaxSystem::writeToFile(std::string path_to_file) const noexcept
 double TaxSystem::calculateAllTaxes()
 {
 	double sum = 0;
-	for (Client client : clients)
+	for (Client& client : clients)
 		sum += client.calculateTaxAmount();
 	return sum;
 }

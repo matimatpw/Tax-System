@@ -98,6 +98,7 @@ int main()
 		is_valid = false;
 		size_t my_id;
 		int choice = 0;
+		//TODO ------------------------------------------------------------------------------
 		std::cout << "Hi, what would you like to do today? Choose one of the options below: \n";
 		std::cout << "1 -> Add Client \n";
 		std::cout << "2 -> Remove Client \n";//by ID
@@ -105,7 +106,7 @@ int main()
 		std::cout << "4 -> Search Client \n";//by (income or client) ID
 		std::cout << "> ";
 		std::cin >> choice;
-
+		//TODO ------------------------------------------------------------------------------
 		switch (choice)
 		{
 		case 1:
@@ -153,7 +154,8 @@ int main()
 		{
 			while (!is_valid) {
 				
-				std::cout << "Jeszczenie zrobione";//TODO  funkcja addIncome , nwm jak podawac tax.?
+				std::cout << "Wprowadz ID klienta: \n> ";//TODO  funkcja addIncome , nwm jak podawac tax.?
+				std::cin >> my_id;
 				is_valid = true;
 			}
 			print_output();
