@@ -28,9 +28,9 @@ void TaxSystem::addIncome(size_t clientID, double amount, Tax* tax)
  
 Client& TaxSystem::searchByIncome(size_t searchID)
 {
-	if (searchID > currentIncomeID)
+	if (searchID >= currentIncomeID)
 		throw std::runtime_error("No income of given ID");
-	for (Client client : clients)
+	for (Client& client : clients)
 		if (client.hasIncome(searchID))
 			return client;
 }
@@ -49,7 +49,7 @@ Client& TaxSystem::searchByClientID(size_t searchID)
 		});
 	if (place == clients.end())
 		throw std::runtime_error("No client of given ID");
-	return (*place);// XDDD
+	return (*place);
 }
 
  

@@ -64,6 +64,7 @@ bool Client::hasIncome(size_t searchID)
 			return true;
 		}
 	}
+	return false;
 }
 
 //void Client::displayInfo(std::ostream& os) const

@@ -76,8 +76,8 @@ int main()
 
 	//here for tersting
 	Person a(69, "xd", {});
-	Income new_inc(500, a.getPersonTaxes()[cit], 20);
-	a.addIncome(new_inc);
+	//Income new_inc(500, a.getPersonTaxes()[cit], 20);
+	//a.addIncome(new_inc);
 	system.addClient(a);
 
 	Company b(70, "company", {});
@@ -86,8 +86,10 @@ int main()
 	//system.addIncome(new_inc3);
 	system.addClient(b);
 
-	//system.addIncome(69,500,a.getPersonTaxes()[cit]);
-	system.addIncome(70,100,b.getCompanyTaxes()[cit]);
+	system.addIncome(69, 101, a.getPersonTaxes()[pit]);
+
+	system.addIncome(70, 202, b.getCompanyTaxes()[cit]);
+	system.addIncome(70, 303, b.getCompanyTaxes()[cit]);
 	//-----
 
 
