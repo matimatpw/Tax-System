@@ -8,6 +8,10 @@
 std::ostream& displayClientInfo(std::ostream& os, Client* my_client) {
 	os << "Nazwa >" << my_client->getName() << "\n";
 	os << "ID >" << my_client->getID() << "\n";
+	os << "Taxes to pay :\n";
+	for (Tax* &tax : my_client->getTaxes()) {
+		os << "> " << tax->getName() << "\n";
+	}
 	os << "Income info :" << "\n";
 	
 	int i = 0;
@@ -15,10 +19,12 @@ std::ostream& displayClientInfo(std::ostream& os, Client* my_client) {
 	for (auto& income : my_client->getIncomes()){
 		os << ">ID - " << income.id << "\n";
 		os << ">Amount - " << income.amount << "\n";
-		os << ">Tax - " << income.toPay <<"\n";
+		os << ">Tax (" << income.tax->getName() << ") - " << income.toPay << "\n";
+		
 		os << ">Is tax paid - ";
 		os << ((income.paid) ? "Yes\n" : "No\n");
 		os << std::endl;
+		
 	}
 	os << "Full Tax> " << my_client->calculateTaxAmount() << "\n";
 
@@ -122,7 +128,7 @@ int main()
 		try {
 			choice = std::stoi(input);
 		}
-		catch (const std::invalid_argument& e) {
+		catch (const std::invalid_argument e) {
 			std::cout << "Invalid input. Please enter a number." << std::endl;
 			continue;
 		}
@@ -191,13 +197,14 @@ int main()
 					std::cin >> my_amount;
 					handleInputError(std::cin);
 					//--------------------------------------------------------------x
-					/*Tax* tax = new Zus; */
+
 					Client* my_client = findClient(2, my_id, system);
 					std::vector<Tax*> taxes = my_client->getTaxes();
 					
-					//std::cout << "Jaki podatek chcesz uwzglednic: \n";
+					std::cout << "Jaki podatek chcesz uwzglednic: \n";
+					int i = 0;
 					for (Tax* tax: taxes) {
-						std::cout << ">" << tax->getName() << "\n";
+						std::cout << ++i <<"-> " << tax->getName() << "\n";
 					}
 					//--------------------------------------------------------------x
 					//system.addIncome(my_id, my_amount, tax); // <-- tutaj co podawac jako TAX !!!!
