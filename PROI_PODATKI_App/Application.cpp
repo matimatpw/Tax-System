@@ -176,9 +176,9 @@ int main()
 			double my_amount;
 			while (!is_valid) {
 				
-				std::cout << "Wprowadz ID klienta: \n> ";//TODO  funkcja addIncome , nwm jak podawac tax.?
+				std::cout << "Wprowadz ID klienta: \n> ";
 				std::cin >> my_id;
-				std::cout << "Wprowadz kwote przychodu: \n> ";//TODO  funkcja addIncome , nwm jak podawac tax.?
+				std::cout << "Wprowadz kwote przychodu: \n> "; //TODO  funkcja addIncome , nwm jak podawac tax.?
 				std::cin >> my_amount;
 				try {
 					//--------------------------------------------------------------x
@@ -189,7 +189,7 @@ int main()
 					//	std::cout << ">" << tax->getName() << "\n";
 					//}
 					//--------------------------------------------------------------x
-					system.addIncome(my_id, my_amount, tax);
+					system.addIncome(my_id, my_amount, tax); // <-- tutaj co podawac jako TAX !!!!
 					is_valid = true;
 					delete tax;
 				}
