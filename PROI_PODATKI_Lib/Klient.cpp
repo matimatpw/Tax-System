@@ -199,3 +199,5 @@ void Company::displayInfo(std::ostream& os) const
 std::vector<size_t> Client::ID_base = {};
 
 
+std::vector<Tax*> Company::company_taxes = {};
+std::vector<Tax*> Person::person_taxes = {};
