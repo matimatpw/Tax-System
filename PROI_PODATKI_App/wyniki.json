@@ -2,18 +2,32 @@
     "Client_ID": {
         "69": {
             "info": {
+                "client_type": "osoba",
                 "Client_Name": "xd",
                 "Client_Incomes": {
-                    "0": 101.0
+                    "0": {
+                        "amount": 101.0,
+                        "tax": "pit",
+                        "paid": false
+                    }
                 }
             }
         },
         "70": {
             "info": {
+                "client_type": "firma",
                 "Client_Name": "company",
                 "Client_Incomes": {
-                    "1": 202.0,
-                    "2": 303.0
+                    "1": {
+                        "amount": 202.0,
+                        "tax": "cit",
+                        "paid": false
+                    },
+                    "2": {
+                        "amount": 303.0,
+                        "tax": "cit",
+                        "paid": false
+                    }
                 }
             }
         }

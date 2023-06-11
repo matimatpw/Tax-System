@@ -30,19 +30,19 @@ Client* createClient(int my_choice, size_t& index_XD) {
 	if (my_choice == 1) {
 		std::cout << "Wprowadz Imie i Nazwisko\n> ";
 		std::getline(std::cin, name);
-		Person client(size_t(index_XD),name, {});
+		Person* client = new Person(size_t(index_XD),name, {});
 		//test---
 		
 		//---
 		index_XD++;
-		return &client;
+		return client;
 	}
 	else if (my_choice == 2) {
 		std::cout << "Wprowadz nazwe Firmy\n> ";
 		std::getline(std::cin, name);
-		Company client(size_t(index_XD),name, {});
+		Company* client = new Company(size_t(index_XD),name, {});
 		index_XD++;
-		return &client;
+		return client;
 	}
 	else {
 		throw std::invalid_argument("Wrong number\n");

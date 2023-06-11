@@ -33,6 +33,9 @@ void saveToJson(std::string filename, std::vector<Client*> client_base) {
 		client_info["info"]["client_type"] = osoba ? "osoba" : "firma";
 		client_info["info"]["Client_Name"] = client->getName();
 
+		if (client->getIncomes().size() == 0)
+			continue;
+
 		for (Income current_income : client_incomes)
 		{
 			client_info["info"]["Client_Incomes"][std::to_string(current_income.id)]["amount"] = current_income.amount;
