@@ -90,7 +90,7 @@ void print_output() {
 }
 
 int main()
-{
+{	
 	size_t my_idx = 0;//id of clients (incremented each addklient)
 	TaxSystem system;
 	bool is_valid;
@@ -178,13 +178,20 @@ int main()
 				
 				std::cout << "Wprowadz ID klienta: \n> ";//TODO  funkcja addIncome , nwm jak podawac tax.?
 				std::cin >> my_id;
+				std::cout << "Wprowadz kwote przychodu: \n> ";//TODO  funkcja addIncome , nwm jak podawac tax.?
+				std::cin >> my_amount;
 				try {
-					std::vector<Tax*> taxes = getTaxes(my_id, system);
-					std::cout << "Jaki podatek chcesz uwzglednic: \n";
-					for (Tax* tax: taxes) {
-						std::cout << ">" << tax->getName() << "\n";
-					}
+					//--------------------------------------------------------------x
+					Tax* tax = new Zus;
+					//Client& my_client = findClient(2, my_id, system);
+					//std::cout << "Jaki podatek chcesz uwzglednic: \n";
+					//for (Tax* tax: taxes) {
+					//	std::cout << ">" << tax->getName() << "\n";
+					//}
+					//--------------------------------------------------------------x
+					system.addIncome(my_id, my_amount, tax);
 					is_valid = true;
+					delete tax;
 				}
 				catch (std::runtime_error r) {
 					std::cout << r.what() << std::endl;
@@ -194,8 +201,6 @@ int main()
 				}
 			}
 				//tutaj zapytac jaki podatek klient chce uwzglednic w przychodzie
-			std::cout << "Wprowadz kwote przychodu: \n> ";//TODO  funkcja addIncome , nwm jak podawac tax.?
-			std::cin >> my_amount;
 			
 			print_output();
 			break;
