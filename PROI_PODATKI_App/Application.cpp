@@ -4,6 +4,20 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <chrono>
+#include <thread>
+
+enum Events {
+	NullEvent = 0,
+	AddClient = 1,
+	RemoveClient = 2,
+	AddIncome = 3,
+	SearchClient = 4,
+	SaveToJson = 5,
+	LoadFromJson = 6,
+	PayTax = 7
+};
+
 
 std::ostream& displayClientInfo(std::ostream& os, Client* my_client) {
 	os << "Nazwa >" << my_client->getName() << "\n";
@@ -35,17 +49,14 @@ Client* createClient(int my_choice, size_t& index_XD) {
 	std::string name;
 	if (my_choice == 1) {
 		std::cout << "Wprowadz Imie i Nazwisko\n> ";
-		std::getline(std::cin, name);
+		std::cin >> name;
 		Person* client = new Person(size_t(index_XD),name, {});
-		//test---
-		
-		//---
 		index_XD++;
 		return client;
 	}
 	else if (my_choice == 2) {
 		std::cout << "Wprowadz nazwe Firmy\n> ";
-		std::getline(std::cin, name);
+		std::cin >> name;
 		Company* client = new Company(size_t(index_XD),name, {});
 		index_XD++;
 		return client;
@@ -68,7 +79,6 @@ Client* findClient(int my_choice, size_t id, TaxSystem& my_system) {
 	}
 }
 
-//TODO ID klienta trzeba automatycznie jakos ustawiac np. incermentacja
 
 void handleInputError(std::istream& stream) {
 	if (stream.fail()) {
@@ -78,15 +88,15 @@ void handleInputError(std::istream& stream) {
 	}
 }
 void print_output() {
-	std::cout << "Done :)\n";
-	//for (int i = 0; i < 100; i++)
-	//	std::cout << "-";
-	std::cout << std::endl;
+	std::cout << "\nDone :)\n";
+	std::chrono::seconds timer(3);
+	std::this_thread::sleep_for(timer);    //  czysczenie konsoli (czyszczenie 3 sekundy przed)
+	system("CLS");
 }
 
 int main()
 {	
-	size_t my_idx = 0;//id of clients (incremented each addklient)
+	size_t my_idx = 0; //id of clients (incremented after each AddClient, decrement after each RemoveClient)
 	TaxSystem system;
 	bool is_valid;
 
@@ -121,7 +131,9 @@ int main()
 		std::cout << "2 -> Remove Client \n";//by ID
 		std::cout << "3 -> Add Income \n";
 		std::cout << "4 -> Search Client \n";//by (income or client) ID
-		std::cout << "5 -> Save CLients To Json File \n";
+		std::cout << "5 -> Save Clients To Json File \n";
+		std::cout << "6 -> Load Clients From Json File \n";
+		std::cout << "7 -> Pay Tax From Income Of Given ID \n";
 		std::cout << "> ";
 		std::cin >> input;
 
@@ -136,7 +148,7 @@ int main()
 		//TODO ------------------------------------------------------------------------------
 		switch (choice)
 		{
-		case 1:
+		case AddClient:
 		{
 			while (!is_valid)
 			{
@@ -144,13 +156,13 @@ int main()
 				std::cout << "Firma czy Osoba?: \n";
 				std::cout << "1-> Osoba\n";
 				std::cout << "2-> Firma\n> ";
-				
+				std::cin >> choice;
 
 
 				try {
 					Client* client = createClient(choice, my_idx);
 					system.addClient(client);
-					std::cout << "This client ID is: " << "";
+					std::cout << "This client ID is: " << my_idx - 1 << "";
 					is_valid = true;
 
 				}
@@ -164,7 +176,7 @@ int main()
 			print_output();
 			break;
 		}
-		case 2:
+		case RemoveClient:
 		{
 			while (!is_valid) {
 				std::cout << "Wprowadz ID Klienta:\n> ";
@@ -172,6 +184,7 @@ int main()
 				try {
 					handleInputError(std::cin);
 					system.deleteClientByID(size_t(choice));
+					my_idx--;
 					is_valid = true;
 				}
 				catch (std::runtime_error e) {
@@ -184,8 +197,9 @@ int main()
 			print_output();
 			break;
 		}
-		case 3:
+		case AddIncome:
 		{
+			// Wskaznik na podatek przekazywany do konstruktora wplywu, nie tworza sie nowe obietky podatku, wiec nie trzeba ich usuwac
 			double my_amount;
 			while (!is_valid) {
 
@@ -193,10 +207,9 @@ int main()
 					std::cout << "Wprowadz ID klienta: \n> ";
 					std::cin >> my_id;
 					handleInputError(std::cin);
-					std::cout << "Wprowadz kwote przychodu: \n> "; //TODO  funkcja addIncome , nwm jak podawac tax.?
+					std::cout << "Wprowadz kwote przychodu: \n> ";
 					std::cin >> my_amount;
 					handleInputError(std::cin);
-					//--------------------------------------------------------------x
 
 					Client* my_client = findClient(2, my_id, system);
 					std::vector<Tax*> taxes = my_client->getTaxes();
@@ -206,10 +219,10 @@ int main()
 					for (Tax* tax: taxes) {
 						std::cout << ++i <<"-> " << tax->getName() << "\n";
 					}
-					//--------------------------------------------------------------x
-					//system.addIncome(my_id, my_amount, tax); // <-- tutaj co podawac jako TAX !!!!
+					std::cin >> choice;
+					system.addIncome(my_id, my_amount, taxes[choice-1]);
+					
 					is_valid = true;
-					/*delete tax;*/
 				}
 				catch (std::runtime_error r) {
 					std::cout << r.what() << std::endl;
@@ -218,12 +231,11 @@ int main()
 					std::cout << e.what() << std::endl;
 				}
 			}
-			//tutaj zapytac jaki podatek klient chce uwzglednic w przychodzie
 
 			print_output();
 			break;
 		}
-		case 4:
+		case SearchClient:
 		{
 
 			std::cin.clear();
@@ -251,7 +263,7 @@ int main()
 			print_output();
 			break;
 		}
-		case 5:
+		case SaveToJson:
 		{
 			while (!is_valid) {
 				std::string filename{};
@@ -273,7 +285,16 @@ int main()
 			print_output();
 			break;
 		}
-
+		case LoadFromJson:
+		{
+			//TODO: load clients from json file
+			break;
+		}
+		case PayTax:
+		{
+			//TODO: pay tax from income of given id
+			break;
+		}
 
 		default:
 		{
@@ -289,7 +310,7 @@ int main()
 		// 
 		// 
 		//addclimt
-		//taxsyte
+		//taxsytem
 	} while (true);
 	return 0;
 };
