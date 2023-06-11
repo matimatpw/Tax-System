@@ -10,6 +10,8 @@ TaxSystem::TaxSystem()
  
 TaxSystem::~TaxSystem()
 {
+	for (Client* client : clients)
+		delete client;
 }
 
  
