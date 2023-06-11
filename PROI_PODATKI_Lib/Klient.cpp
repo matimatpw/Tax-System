@@ -117,7 +117,6 @@ void Person::displayInfo(std::ostream& os) const
 	os << "Imie i Nazwisko >" << this->getName() << "\n";
 	os << "ID >" << this->getID() << "\n";
 	os << "Income info :" << "\n";
-
 }
 
 

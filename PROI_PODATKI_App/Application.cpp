@@ -5,9 +5,10 @@
 #include <string>
 
 std::ostream& displayClientInfo(std::ostream& os, Client& my_client) {
+	os << "\n";
 	os << "Nazwa >" << my_client.getName() << "\n";
 	os << "ID >" << my_client.getID() << "\n";
-	os << "Income info :" << "\n";
+	os << "__Income info__ :" << "\n";
 	
 	int i = 0;
 	int MAX_ITER = 3;
@@ -107,6 +108,7 @@ int main()
 		is_valid = false;
 		size_t my_id;
 		int choice = 0;
+		std::string input;
 		//TODO ------------------------------------------------------------------------------
 		std::cout << "Hi, what would you like to do today? Choose one of the options below: \n";
 		std::cout << "1 -> Add Client \n";
@@ -115,13 +117,13 @@ int main()
 		std::cout << "4 -> Search Client \n";//by (income or client) ID
 		std::cout << "5 -> Pay Income \n";
 		std::cout << "> ";
-		std::cin >> choice;
+		std::cin >> input;
 
 		try {
-			handleInputError(std::cin);
+			choice = std::stoi(input);
 		}
-		catch (std::invalid_argument e) {
-			std::cout << e.what() << " Input 1-5 please" << std::endl;
+		catch (const std::invalid_argument& e) {
+			std::cout << "Invalid input. Please enter a number." << std::endl;
 			continue;
 		}
 
@@ -188,11 +190,13 @@ int main()
 			double my_amount;
 			while (!is_valid) {
 
-				std::cout << "Wprowadz ID klienta: \n> ";
-				std::cin >> my_id;
-				std::cout << "Wprowadz kwote przychodu: \n> "; //TODO  funkcja addIncome , nwm jak podawac tax.?
-				std::cin >> my_amount;
 				try {
+					std::cout << "Wprowadz ID klienta: \n> ";
+					std::cin >> my_id;
+					handleInputError(std::cin);
+					std::cout << "Wprowadz kwote przychodu: \n> "; //TODO  funkcja addIncome , nwm jak podawac tax.?
+					std::cin >> my_amount;
+					handleInputError(std::cin);
 					//--------------------------------------------------------------x
 					Tax* tax = new Zus;
 					Client& my_client = findClient(2, my_id, system);
@@ -220,16 +224,22 @@ int main()
 		}
 		case 4:
 		{
+
+			std::cin.clear();
 			while (!is_valid) {
-				std::cout << "Po czym chcesz wyszukac klienta?:\n";
-				std::cout << "1-> ID wplywu\n";
-				std::cout << "2-> ID klienta\n";
-				std::cout << "Wybierz opcje:\n> ";
-				std::cin >> choice;
-				std::cout << "Wprowadz ID:\n> ";
-				std::cin >> my_id;
-				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore newline
 				try {
+					std::cout << "Po czym chcesz wyszukac klienta?:\n";
+					std::cout << "1-> ID wplywu\n";
+					std::cout << "2-> ID klienta\n";
+					std::cout << "Wybierz opcje:\n> ";
+					std::cin >> choice;
+					handleInputError(std::cin);
+					if (choice != 2 && choice != 1)
+						throw std::invalid_argument("Please choose 1 or 2!");
+					std::cout << "Wprowadz ID:\n> ";
+					std::cin >> my_id;
+					handleInputError(std::cin);
+					std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore newline
 					Client& client = findClient(choice, my_id, system);//tutaj
 					is_valid = true;
 					displayClientInfo(std::cout, client);
