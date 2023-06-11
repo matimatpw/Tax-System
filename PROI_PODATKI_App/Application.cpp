@@ -46,6 +46,7 @@ std::ostream& displayClientInfo(std::ostream& os, Client* my_client) {
 }
 
 Client* createClient(int my_choice, size_t& index_XD) {
+	// mozliwe, ze trzeba to napisac w taxsystem zamiast w aplikacji, bo nie wiadomo jak sie zachowaja destruktory do konca
 	std::string name;
 	if (my_choice == 1) {
 		std::cout << "Wprowadz Imie i Nazwisko\n> ";
