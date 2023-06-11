@@ -103,6 +103,17 @@ std::vector<Tax*> Person::getTaxes()
 	return person_taxes;
 }
 
+void Person::initTaxes()
+{
+	person_taxes = { new Pit, new Pon, new Zus };
+}
+
+void Person::destroyTaxes()
+{
+	for (Tax* tax : person_taxes)
+		delete tax;
+}
+
 //Person::~Person()
 //{
 //	for (Tax* tax : person_taxes)
@@ -145,6 +156,17 @@ std::vector<Tax*> Company::getTaxes()
 	return company_taxes;
 }
 
+void Company::initTaxes()
+{
+	company_taxes = { new Vat, new Cit, new Zus };
+}
+
+void Company::destroyTaxes()
+{
+	for (Tax* tax : company_taxes)
+		delete tax;
+}
+
 //Company::~Company()
 //{
 //	for (Tax* tax : company_taxes)
@@ -174,8 +196,6 @@ void Company::displayInfo(std::ostream& os) const
 
 
 
-std::vector<Tax*> Company::company_taxes = { new Vat, new Cit, new Zus};
-std::vector<Tax*> Person::person_taxes = { new Pit, new Pon, new Zus };
 std::vector<size_t> Client::ID_base = {};
 
 

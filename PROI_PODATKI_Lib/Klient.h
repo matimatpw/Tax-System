@@ -57,6 +57,8 @@ private:
 public:
 	Person(size_t id, std::string name, std::vector<Income> person_incomes = {});
 	std::vector<Tax*> getTaxes();
+	static void initTaxes();
+	static void destroyTaxes();
 	//~Person();
 	void displayInfo(std::ostream& os) const;
 	/*~Person();*/
@@ -72,6 +74,8 @@ private:
 public:
 	Company(size_t id, std::string name, std::vector<Income> company_incomes = {});
 	std::vector<Tax*> getTaxes();
+	static void initTaxes();
+	static void destroyTaxes();
 	//~Company();
 	void displayInfo(std::ostream& os) const;
 	/*~Company();*/
