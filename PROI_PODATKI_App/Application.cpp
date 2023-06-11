@@ -61,27 +61,15 @@ Client& findClient(int my_choice, size_t id, TaxSystem& my_system) {
 	}
 }
 
-//template<typename T>
-//std::unique_ptr<T> makePointer(Client& my_client) {
-//	return std::make_unique<T>(static_cast<T&>(my_client));
-//}
-
-std::vector<Tax*> getTaxes(size_t id, TaxSystem& my_sys) {
-	Client& my_client = findClient(2, id, my_sys);
-	std::unique_ptr<Client> my_ptr;
-
-	if (Person* person = dynamic_cast<Person*>(&my_client)) {
-		return person->getPersonTaxes();
-	}
-	else if (Company* company = dynamic_cast<Company*>(&my_client)) {
-		return company->getCompanyTaxes();
-	}
-	else {
-		throw std::invalid_argument("Not derived class\n");		// unlikely(impossible) to happen..
-	}	
-}
 //TODO ID klienta trzeba automatycznie jakos ustawiac np. incermentacja
 
+void handleInputError(std::istream& stream) {
+	if (stream.fail()) {
+		stream.clear();
+		stream.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		throw std::invalid_argument("Input Error!");
+	}
+}
 void print_output() {
 	std::cout << "Done :)\n";
 	//for (int i = 0; i < 100; i++)
@@ -125,31 +113,51 @@ int main()
 		std::cout << "2 -> Remove Client \n";//by ID
 		std::cout << "3 -> Add Income \n";
 		std::cout << "4 -> Search Client \n";//by (income or client) ID
+		std::cout << "5 -> Pay Income \n";
 		std::cout << "> ";
 		std::cin >> choice;
+
+		try {
+			handleInputError(std::cin);
+		}
+		catch (std::invalid_argument e) {
+			std::cout << e.what() << " Input 1-5 please" << std::endl;
+			continue;
+		}
+
 		//TODO ------------------------------------------------------------------------------
 		switch (choice)
 		{
 		case 1:
 		{
-			while(!is_valid)
+			while (!is_valid)
 			{
 
 				std::cout << "Firma czy Osoba?: \n";
 				std::cout << "1-> Osoba\n";
 				std::cout << "2-> Firma\n> ";
-				std::cin >> choice;
-				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore newline
-
 				
+
+
 				try {
-					Client client = createClient(choice, my_idx);
+					std::cin >> choice;
+					handleInputError(std::cin);
+					//if (std::cin.fail()) {
+					//	handleInputError(std::cin);
+					//	throw std::invalid_argument("Input number (1-2) please");
+					//}
+					std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore newline
+					Client client = createClient(choice, my_idx);// Here error if empty / Person contains numbers 
 					system.addClient(client);
+					std::cout << "This client ID is: " << "";
 					is_valid = true;
 
 				}
 				catch (std::invalid_argument e) {
-					std::cout << e.what() << std::endl;
+					std::cout << e.what() << " Input 1 or 2 please" << std::endl;
+				}
+				catch (std::runtime_error r) {
+					std::cout << r.what() << std::endl;
 				}
 			}
 			print_output();
@@ -161,11 +169,15 @@ int main()
 				std::cout << "Wprowadz ID Klienta:\n> ";
 				std::cin >> choice;
 				try {
+					handleInputError(std::cin);
 					system.deleteClientByID(size_t(choice));
 					is_valid = true;
 				}
 				catch (std::runtime_error e) {
 					std::cout << e.what() << std::endl;
+				}
+				catch (std::invalid_argument e) {
+					std::cout << e.what() << " ID contains only numbers!" << std::endl;
 				}
 			}
 			print_output();
@@ -175,7 +187,7 @@ int main()
 		{
 			double my_amount;
 			while (!is_valid) {
-				
+
 				std::cout << "Wprowadz ID klienta: \n> ";
 				std::cin >> my_id;
 				std::cout << "Wprowadz kwote przychodu: \n> "; //TODO  funkcja addIncome , nwm jak podawac tax.?
@@ -183,7 +195,8 @@ int main()
 				try {
 					//--------------------------------------------------------------x
 					Tax* tax = new Zus;
-					//Client& my_client = findClient(2, my_id, system);
+					Client& my_client = findClient(2, my_id, system);
+					
 					//std::cout << "Jaki podatek chcesz uwzglednic: \n";
 					//for (Tax* tax: taxes) {
 					//	std::cout << ">" << tax->getName() << "\n";
@@ -196,16 +209,16 @@ int main()
 				catch (std::runtime_error r) {
 					std::cout << r.what() << std::endl;
 				}
-				catch (std::invalid_argument e){
+				catch (std::invalid_argument e) {
 					std::cout << e.what() << std::endl;
 				}
 			}
-				//tutaj zapytac jaki podatek klient chce uwzglednic w przychodzie
-			
+			//tutaj zapytac jaki podatek klient chce uwzglednic w przychodzie
+
 			print_output();
 			break;
 		}
-		case 4: 
+		case 4:
 		{
 			while (!is_valid) {
 				std::cout << "Po czym chcesz wyszukac klienta?:\n";
@@ -232,9 +245,11 @@ int main()
 			break;
 		}
 
-		
+
 		default:
+		{
 			std::cout << "> Niepoprawna opcja! <\n";
+		}
 		}
 		// Taxsystem X
 		// 

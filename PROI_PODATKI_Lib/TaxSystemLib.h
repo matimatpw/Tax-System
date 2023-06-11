@@ -18,7 +18,7 @@ public:
 	
 	Client& searchByClientID(size_t searchID);
 	void deleteClientByID(size_t searchID);
-	void addClient(const Client& newClient);
+	void addClient(const Client& newClient) noexcept;
 
 	void writeToFile(std::string path_to_file) const noexcept;
 

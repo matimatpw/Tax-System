@@ -40,7 +40,6 @@ public:
 	void markPaid(size_t searchID);
 	bool hasIncome(size_t searchID);
 
-	virtual ~Client();
 	/*void displayInfo(std::ostream& os) const;*/
 	
 	//friend std::ostream& operator<<(std::ostream& os, const Client& my_client);
@@ -56,7 +55,7 @@ private:
 public:
 	Person(size_t id, std::string name, std::vector<Income> person_incomes = {});
 	std::vector<Tax*> getPersonTaxes() const;
-	~Person();
+	//~Person();
 	void displayInfo(std::ostream& os) const;
 	
 };
@@ -70,7 +69,7 @@ private:
 public:
 	Company(size_t id, std::string name, std::vector<Income> company_incomes = {});
 	std::vector<Tax*> getCompanyTaxes() const;
-	~Company();
+	//~Company();
 	void displayInfo(std::ostream& os) const;
 };
 

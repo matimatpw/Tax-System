@@ -67,7 +67,7 @@ void TaxSystem::deleteClientByID(size_t searchID)
 }
 
  
-void TaxSystem::addClient(const Client& newClient)
+void TaxSystem::addClient(const Client& newClient) noexcept
 {
 	clients.push_back(newClient);
 }
