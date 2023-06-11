@@ -2,26 +2,45 @@
     "Client_ID": {
         "10001": {
             "info": {
+                "client_type": "osoba",
                 "Client_Name": "Marek Brzozowski",
                 "Client_Incomes": {
-                    "5000": 1500.0,
-                    "5001": 5500.0
+                    "5000": {
+                        "amount": 1500.0,
+                        "tax": "pit",
+                        "paid": false
+                    },
+                    "5001": {
+                        "amount": 5500.0,
+                        "tax": "zus",
+                        "paid": false
+                    }
                 }
             }
         },
         "5001": {
             "info": {
+                "client_type": "osoba",
                 "Client_Name": "Darek Nowak",
                 "Client_Incomes": {
-                    "5000": 1500.0
+                    "5000": {
+                        "amount": 1500.0,
+                        "tax": "pit",
+                        "paid": false
+                    }
                 }
             }
         },
         "6005": {
             "info": {
+                "client_type": "osoba",
                 "Client_Name": "Eugeniusz Dabrowski",
                 "Client_Incomes": {
-                    "5001": 5500.0
+                    "5001": {
+                        "amount": 5500.0,
+                        "tax": "zus",
+                        "paid": false
+                    }
                 }
             }
         }

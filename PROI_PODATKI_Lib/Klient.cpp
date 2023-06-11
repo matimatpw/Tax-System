@@ -36,9 +36,9 @@ void Client::addIncome(const Income& new_income)
 double Client::calculateTaxAmount() const
 {
 	double sum = 0;
-	for (auto& wplyw : Incomes)
+	for (auto& income : Incomes)
 	{
-		sum += wplyw.toPay;
+		sum += income.toPay;
 	}
 	return sum;
 }
@@ -112,6 +112,14 @@ void Person::displayInfo(std::ostream& os) const
 
 }
 
+Client::~Client() = default;
+
+Person::~Person()
+{
+	for (Tax* tax : person_taxes)
+		delete tax;
+}
+
 
 
 
@@ -139,6 +147,12 @@ void Company::displayInfo(std::ostream& os) const
 	os << "ID >" << this->getID() << "\n";
 	os << "Income info :" << "\n";
 }
+Company::~Company()
+{
+	for (Tax* tax : company_taxes)
+		delete tax;
+}
+
 //std::ostream& operator<<(std::ostream& os, const Client& my_client)
 //{
 //	my_client.displayInfo(os);

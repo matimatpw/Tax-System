@@ -1,16 +1,18 @@
 #include "../PROI_PODATKI_Lib/TaxSystemLib.h"
 #include "SavingJson.h"
+#include "LoadingJson.h"
 #include <iostream>
 #include <sstream>
 #include <string>
-std::ostream& displayClientInfo(std::ostream& os, Client& my_client) {
-	os << "Nazwa >" << my_client.getName() << "\n";
-	os << "ID >" << my_client.getID() << "\n";
+
+std::ostream& displayClientInfo(std::ostream& os, Client* my_client) {
+	os << "Nazwa >" << my_client->getName() << "\n";
+	os << "ID >" << my_client->getID() << "\n";
 	os << "Income info :" << "\n";
 	
 	int i = 0;
 	int MAX_ITER = 3;
-	for (auto& income : my_client.getIncomes()){
+	for (auto& income : my_client->getIncomes()){
 		os << ">ID - " << income.id << "\n";
 		os << ">Amount - " << income.amount << "\n";
 		os << ">Tax - " << income.toPay <<"\n";
@@ -18,12 +20,12 @@ std::ostream& displayClientInfo(std::ostream& os, Client& my_client) {
 		os << ((income.paid) ? "Yes\n" : "No\n");
 		os << std::endl;
 	}
-	os << "Full Tax> " << my_client.calculateTaxAmount() << "\n";
+	os << "Full Tax> " << my_client->calculateTaxAmount() << "\n";
 
 	return os;
 }
 
-Client createClient(int my_choice, size_t& index_XD) {
+Client* createClient(int my_choice, size_t& index_XD) {
 	std::string name;
 	if (my_choice == 1) {
 		std::cout << "Wprowadz Imie i Nazwisko\n> ";
@@ -33,14 +35,14 @@ Client createClient(int my_choice, size_t& index_XD) {
 		
 		//---
 		index_XD++;
-		return client;
+		return &client;
 	}
 	else if (my_choice == 2) {
 		std::cout << "Wprowadz nazwe Firmy\n> ";
 		std::getline(std::cin, name);
 		Company client(size_t(index_XD),name, {});
 		index_XD++;
-		return client;
+		return &client;
 	}
 	else {
 		throw std::invalid_argument("Wrong number\n");
@@ -48,12 +50,12 @@ Client createClient(int my_choice, size_t& index_XD) {
 
 }
 
-Client findClient(int my_choice, size_t id, TaxSystem& my_system) {
+Client* findClient(int my_choice, size_t id, TaxSystem& my_system) {
 	if (my_choice == 1) {
-		return my_system.searchByIncome(id);
+		return &(my_system.searchByIncome(id));
 	}
 	else if (my_choice == 2) {
-		return my_system.searchByClientID(id);
+		return &(my_system.searchByClientID(id));
 	}
 	else {
 		throw std::invalid_argument("Wrong number\n");
@@ -78,13 +80,13 @@ int main()
 	Person a(69, "xd", {});
 	//Income new_inc(500, a.getPersonTaxes()[cit], 20);
 	//a.addIncome(new_inc);
-	system.addClient(a);
+	system.addClient(&a);
 
 	Company b(70, "company", {});
 	Income new_inc2(600, b.getCompanyTaxes()[cit], 30);
 	Income new_inc3(600, b.getCompanyTaxes()[cit], 31);
 	//system.addIncome(new_inc3);
-	system.addClient(b);
+	system.addClient(&b);
 
 	system.addIncome(69, 101, a.getPersonTaxes()[pit]);
 
@@ -122,7 +124,7 @@ int main()
 
 				
 				try {
-					Client client = createClient(choice, my_idx);
+					Client* client = createClient(choice, my_idx);
 					system.addClient(client);
 					is_valid = true;
 
@@ -172,7 +174,7 @@ int main()
 				std::cin >> my_id;
 				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore newline
 				try {
-					Client client = findClient(choice, my_id, system);//tutaj
+					Client* client = findClient(choice, my_id, system);//tutaj
 					is_valid = true;
 					displayClientInfo(std::cout, client);
 				}
