@@ -70,10 +70,10 @@ Client* createClient(int my_choice, size_t& index_XD) {
 
 Client* findClient(int my_choice, size_t id, TaxSystem& my_system) {
 	if (my_choice == 1) {
-		return &(my_system.searchByIncome(id));
+		return my_system.searchByIncome(id);
 	}
 	else if (my_choice == 2) {
-		return &(my_system.searchByClientID(id));
+		return my_system.searchByClientID(id);
 	}
 	else {
 		throw std::invalid_argument("Wrong number\n");
@@ -92,31 +92,32 @@ void print_output() {
 	std::cout << "\nDone :)\n";
 	std::chrono::seconds timer(3);
 	std::this_thread::sleep_for(timer);    //  czysczenie konsoli (czyszczenie 3 sekundy przed)
+	//TODO: Lepsza wersje: oczekiwanie na powrot to wyboru opcji
 	system("CLS");
 }
 
 int main()
 {	
 	size_t my_idx = 0; //id of clients (incremented after each AddClient, decrement after each RemoveClient)
-	TaxSystem system;
+	TaxSystem taxsystem;
 	bool is_valid;
 
 	//here for tersting
-	Person a(69, "xd", {});
+	Client* a = new Person(69, "xd", {});
 	//Income new_inc(500, a.getPersonTaxes()[cit], 20);
 	//a.addIncome(new_inc);
-	system.addClient(&a);
+	taxsystem.addClient(a);
 
-	Company b(70, "company", {});
-	Income new_inc2(600, b.getTaxes()[cit], 30);
-	Income new_inc3(600, b.getTaxes()[cit], 31);
+	Client* b = new Company(70, "company", {});
+	Income new_inc2(600, b->getTaxes()[cit], 30);
+	Income new_inc3(600, b->getTaxes()[cit], 31);
 	//system.addIncome(new_inc3);
-	system.addClient(&b);
+	taxsystem.addClient(b);
 
-	system.addIncome(69, 101, a.getTaxes()[pit]);
+	taxsystem.addIncome(69, 101, a->getTaxes()[pit]);
 
-	system.addIncome(70, 202, b.getTaxes()[cit]);
-	system.addIncome(70, 303, b.getTaxes()[cit]);
+	taxsystem.addIncome(70, 202, b->getTaxes()[cit]);
+	taxsystem.addIncome(70, 303, b->getTaxes()[cit]);
 	//-----
 
 
@@ -145,7 +146,7 @@ int main()
 			std::cout << "Invalid input. Please enter a number." << std::endl;
 			continue;
 		}
-
+		// system("CLS"); //czyszczenie konsoli po wyborze opcji
 		//TODO ------------------------------------------------------------------------------
 		switch (choice)
 		{
@@ -162,7 +163,7 @@ int main()
 
 				try {
 					Client* client = createClient(choice, my_idx);
-					system.addClient(client);
+					taxsystem.addClient(client);
 					std::cout << "This client ID is: " << my_idx - 1 << "";
 					is_valid = true;
 
@@ -184,7 +185,7 @@ int main()
 				std::cin >> choice;
 				try {
 					handleInputError(std::cin);
-					system.deleteClientByID(size_t(choice));
+					taxsystem.deleteClientByID(size_t(choice));
 					my_idx--;
 					is_valid = true;
 				}
@@ -212,7 +213,7 @@ int main()
 					std::cin >> my_amount;
 					handleInputError(std::cin);
 
-					Client* my_client = findClient(2, my_id, system);
+					Client* my_client = findClient(2, my_id, taxsystem);
 					std::vector<Tax*> taxes = my_client->getTaxes();
 					
 					std::cout << "Jaki podatek chcesz uwzglednic: \n";
@@ -221,7 +222,7 @@ int main()
 						std::cout << ++i <<"-> " << tax->getName() << "\n";
 					}
 					std::cin >> choice;
-					system.addIncome(my_id, my_amount, taxes[choice-1]);
+					taxsystem.addIncome(my_id, my_amount, taxes[choice-1]);
 					
 					is_valid = true;
 				}
@@ -250,7 +251,7 @@ int main()
 				std::cin >> my_id;
 				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore newline
 				try {
-					Client* client = findClient(choice, my_id, system);//tutaj
+					Client* client = findClient(choice, my_id, taxsystem);//tutaj
 					is_valid = true;
 					displayClientInfo(std::cout, client);
 				}
@@ -261,6 +262,7 @@ int main()
 					std::cout << e.what() << std::endl;
 				}
 			}
+			
 			print_output();
 			break;
 		}
@@ -273,7 +275,7 @@ int main()
 				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore newline
 				try {
 					
-					saveToJson(filename, system.get_clients_base());
+					saveToJson(filename, taxsystem.get_clients_base());
 					is_valid = true;
 				}
 				catch (std::runtime_error r) {

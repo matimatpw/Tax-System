@@ -10,15 +10,14 @@ private:
 public:
 	TaxSystem();
 	~TaxSystem();
-	TaxSystem(std::string path_to_file);
 
 	void addIncome(size_t clientID, double amount, Tax* tax);
-	Client& searchByIncome(size_t searchID);
+	Client* searchByIncome(size_t searchID);
 	void markPaid(size_t searchID);
 	
 	std::vector<Client*> get_clients_base() const noexcept;
 
-	Client& searchByClientID(size_t searchID);
+	Client* searchByClientID(size_t searchID);
 	void deleteClientByID(size_t searchID);
 	void addClient(Client* newClient);
 
