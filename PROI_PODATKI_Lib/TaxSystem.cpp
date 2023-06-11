@@ -10,6 +10,8 @@ TaxSystem::TaxSystem()
  
 TaxSystem::~TaxSystem()
 {
+	for (Client* client : clients)
+		delete client;
 }
 
  
@@ -21,18 +23,17 @@ TaxSystem::TaxSystem(std::string path_to_file)
 void TaxSystem::addIncome(size_t clientID, double amount, Tax* tax)
 {
 	Client& client = searchByClientID(clientID);
-	Income newIncome = Income(amount, tax, currentIncomeID);
+	Income newIncome = Income(amount, tax, current_income_ID);
 	client.addIncome(newIncome);
-	currentIncomeID++;
+	current_income_ID++;
 }
  
 Client& TaxSystem::searchByIncome(size_t searchID)
 {
-	if (searchID >= currentIncomeID)
-		throw std::runtime_error("No income of given ID");
-	for (Client& client : clients)
-		if (client.hasIncome(searchID))
-			return client;
+	for (Client* client : clients)
+		if (client->hasIncome(searchID))
+			return *client;
+	throw std::runtime_error("No income of given ID");
 }
 
 void TaxSystem::markPaid(size_t searchID)
@@ -44,19 +45,18 @@ void TaxSystem::markPaid(size_t searchID)
  
 Client& TaxSystem::searchByClientID(size_t searchID)
 {
-	auto place = std::find_if(clients.begin(), clients.end(), [searchID](Client& client) {
-		return searchID == client.getID();
-		});
+	auto place = std::find_if(clients.begin(), clients.end(), [searchID](Client* client) {return searchID == client->getID();});
 	if (place == clients.end())
 		throw std::runtime_error("No client of given ID");
-	return (*place);
+	else
+		return *(*place);
 }
 
  
 void TaxSystem::deleteClientByID(size_t searchID)
 {
-	auto place = std::find_if(clients.begin(), clients.end(), [searchID](Client& client) {
-		return searchID == client.getID();
+	auto place = std::find_if(clients.begin(), clients.end(), [searchID](Client* client) {
+		return searchID == client->getID();
 		});
 	if (place != clients.end()) {
 		
@@ -67,7 +67,7 @@ void TaxSystem::deleteClientByID(size_t searchID)
 }
 
  
-void TaxSystem::addClient(const Client& newClient) noexcept
+void TaxSystem::addClient(Client* newClient)
 {
 	clients.push_back(newClient);
 }
@@ -76,12 +76,16 @@ void TaxSystem::writeToFile(std::string path_to_file) const noexcept
 {
 }
 
+std::vector<Client*> TaxSystem::get_clients_base() const noexcept
+{
+	return clients;
+}
  
 double TaxSystem::calculateAllTaxes()
 {
 	double sum = 0;
-	for (Client& client : clients)
-		sum += client.calculateTaxAmount();
+	for (Client* client : clients)
+		sum += (*client).calculateTaxAmount();
 	return sum;
 }
 

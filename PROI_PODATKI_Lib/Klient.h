@@ -22,7 +22,7 @@ enum companyTaxes
 //	virtual void displayInfo(std::ostream& os)const =0;
 //};
 
-class Client /*: public IOClient*/
+class Client
 {
 protected:
 	std::string name;
@@ -30,6 +30,8 @@ protected:
 	static std::vector<size_t> ID_base;
 	std::vector<Income> Incomes{};
 public:
+	virtual ~Client() = 0;
+	//virtual std::vector<Tax*> getTaxes() = 0;
 	size_t getID() const noexcept;
 	std::string getName() const noexcept;
 	std::vector<Income> getIncomes() const;
@@ -57,6 +59,7 @@ public:
 	std::vector<Tax*> getPersonTaxes() const;
 	//~Person();
 	void displayInfo(std::ostream& os) const;
+	/*~Person();*/
 	
 };
 
@@ -71,5 +74,6 @@ public:
 	std::vector<Tax*> getCompanyTaxes() const;
 	//~Company();
 	void displayInfo(std::ostream& os) const;
+	/*~Company();*/
 };
 

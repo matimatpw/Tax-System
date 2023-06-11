@@ -1,18 +1,18 @@
 #include "../PROI_PODATKI_Lib/TaxSystemLib.h"
 #include "SavingJson.h"
+#include "LoadingJson.h"
 #include <iostream>
 #include <sstream>
 #include <string>
 
-std::ostream& displayClientInfo(std::ostream& os, Client& my_client) {
-	os << "\n";
-	os << "Nazwa >" << my_client.getName() << "\n";
-	os << "ID >" << my_client.getID() << "\n";
-	os << "__Income info__ :" << "\n";
+std::ostream& displayClientInfo(std::ostream& os, Client* my_client) {
+	os << "Nazwa >" << my_client->getName() << "\n";
+	os << "ID >" << my_client->getID() << "\n";
+	os << "Income info :" << "\n";
 	
 	int i = 0;
 	int MAX_ITER = 3;
-	for (auto& income : my_client.getIncomes()){
+	for (auto& income : my_client->getIncomes()){
 		os << ">ID - " << income.id << "\n";
 		os << ">Amount - " << income.amount << "\n";
 		os << ">Tax - " << income.toPay <<"\n";
@@ -20,17 +20,17 @@ std::ostream& displayClientInfo(std::ostream& os, Client& my_client) {
 		os << ((income.paid) ? "Yes\n" : "No\n");
 		os << std::endl;
 	}
-	os << "Full Tax> " << my_client.calculateTaxAmount() << "\n";
+	os << "Full Tax> " << my_client->calculateTaxAmount() << "\n";
 
 	return os;
 }
 
-Client createClient(int my_choice, size_t& index_XD) {
+Client* createClient(int my_choice, size_t& index_XD) {
 	std::string name;
 	if (my_choice == 1) {
 		std::cout << "Wprowadz Imie i Nazwisko\n> ";
 		std::getline(std::cin, name);
-		Person client(size_t(index_XD),name, {});
+		Person* client = new Person(size_t(index_XD),name, {});
 		//test---
 		
 		//---
@@ -40,7 +40,7 @@ Client createClient(int my_choice, size_t& index_XD) {
 	else if (my_choice == 2) {
 		std::cout << "Wprowadz nazwe Firmy\n> ";
 		std::getline(std::cin, name);
-		Company client(size_t(index_XD),name, {});
+		Company* client = new Company(size_t(index_XD),name, {});
 		index_XD++;
 		return client;
 	}
@@ -50,12 +50,12 @@ Client createClient(int my_choice, size_t& index_XD) {
 
 }
 
-Client& findClient(int my_choice, size_t id, TaxSystem& my_system) {
+Client* findClient(int my_choice, size_t id, TaxSystem& my_system) {
 	if (my_choice == 1) {
-		return my_system.searchByIncome(id);
+		return &(my_system.searchByIncome(id));
 	}
 	else if (my_choice == 2) {
-		return my_system.searchByClientID(id);
+		return &(my_system.searchByClientID(id));
 	}
 	else {
 		throw std::invalid_argument("Wrong number\n");
@@ -88,13 +88,13 @@ int main()
 	Person a(69, "xd", {});
 	//Income new_inc(500, a.getPersonTaxes()[cit], 20);
 	//a.addIncome(new_inc);
-	system.addClient(a);
+	system.addClient(&a);
 
 	Company b(70, "company", {});
 	Income new_inc2(600, b.getCompanyTaxes()[cit], 30);
 	Income new_inc3(600, b.getCompanyTaxes()[cit], 31);
 	//system.addIncome(new_inc3);
-	system.addClient(b);
+	system.addClient(&b);
 
 	system.addIncome(69, 101, a.getPersonTaxes()[pit]);
 
@@ -115,7 +115,7 @@ int main()
 		std::cout << "2 -> Remove Client \n";//by ID
 		std::cout << "3 -> Add Income \n";
 		std::cout << "4 -> Search Client \n";//by (income or client) ID
-		std::cout << "5 -> Pay Income \n";
+		std::cout << "5 -> Save CLients To Json File \n";
 		std::cout << "> ";
 		std::cin >> input;
 
@@ -142,14 +142,7 @@ int main()
 
 
 				try {
-					std::cin >> choice;
-					handleInputError(std::cin);
-					//if (std::cin.fail()) {
-					//	handleInputError(std::cin);
-					//	throw std::invalid_argument("Input number (1-2) please");
-					//}
-					std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore newline
-					Client client = createClient(choice, my_idx);// Here error if empty / Person contains numbers 
+					Client* client = createClient(choice, my_idx);
 					system.addClient(client);
 					std::cout << "This client ID is: " << "";
 					is_valid = true;
@@ -198,17 +191,17 @@ int main()
 					std::cin >> my_amount;
 					handleInputError(std::cin);
 					//--------------------------------------------------------------x
-					Tax* tax = new Zus;
-					Client& my_client = findClient(2, my_id, system);
+					/*Tax* tax = new Zus; */
+					Client* my_client = findClient(2, my_id, system);
 					
 					//std::cout << "Jaki podatek chcesz uwzglednic: \n";
 					//for (Tax* tax: taxes) {
 					//	std::cout << ">" << tax->getName() << "\n";
 					//}
 					//--------------------------------------------------------------x
-					system.addIncome(my_id, my_amount, tax); // <-- tutaj co podawac jako TAX !!!!
+					//system.addIncome(my_id, my_amount, tax); // <-- tutaj co podawac jako TAX !!!!
 					is_valid = true;
-					delete tax;
+					/*delete tax;*/
 				}
 				catch (std::runtime_error r) {
 					std::cout << r.what() << std::endl;
@@ -227,22 +220,40 @@ int main()
 
 			std::cin.clear();
 			while (!is_valid) {
+				std::cout << "Po czym chcesz wyszukac klienta?:\n";
+				std::cout << "1-> ID wplywu\n";
+				std::cout << "2-> ID klienta\n";
+				std::cout << "Wybierz opcje:\n> ";
+				std::cin >> choice;
+				std::cout << "Wprowadz ID:\n> ";
+				std::cin >> my_id;
+				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore newline
 				try {
-					std::cout << "Po czym chcesz wyszukac klienta?:\n";
-					std::cout << "1-> ID wplywu\n";
-					std::cout << "2-> ID klienta\n";
-					std::cout << "Wybierz opcje:\n> ";
-					std::cin >> choice;
-					handleInputError(std::cin);
-					if (choice != 2 && choice != 1)
-						throw std::invalid_argument("Please choose 1 or 2!");
-					std::cout << "Wprowadz ID:\n> ";
-					std::cin >> my_id;
-					handleInputError(std::cin);
-					std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore newline
-					Client& client = findClient(choice, my_id, system);//tutaj
+					Client* client = findClient(choice, my_id, system);//tutaj
 					is_valid = true;
 					displayClientInfo(std::cout, client);
+				}
+				catch (std::runtime_error r) {
+					std::cout << r.what() << std::endl;
+				}
+				catch (std::invalid_argument e) {
+					std::cout << e.what() << std::endl;
+				}
+			}
+			print_output();
+			break;
+		}
+		case 5:
+		{
+			while (!is_valid) {
+				std::string filename{};
+				std::cout << "Podaj nazwe pliku do ktorego chcesz zapisac dane:\n";
+				std::cin >> filename;
+				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore newline
+				try {
+					
+					saveToJson(filename, system.get_clients_base());
+					is_valid = true;
 				}
 				catch (std::runtime_error r) {
 					std::cout << r.what() << std::endl;

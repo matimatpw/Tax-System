@@ -2,28 +2,48 @@
 #include "../PROI_PODATKI_Lib/TaxSystemLib.h"
 #include <fstream>
 #include <iostream>
-#include <nlohmann/json.hpp>
+#include "../single_include/nlohmann/json.hpp"
 
 
 using ordered_json = nlohmann::ordered_json;
 
-void saveToJson(std::string filename, std::vector<Client>& client_base) {
+std::string getTaxName(Income income) {
+	Tax* tax = income.tax;
+	
+	Pit* pit = dynamic_cast<Pit*>(tax);
+	Vat* vat = dynamic_cast<Vat*>(tax);
+	Pon* pon = dynamic_cast<Pon*>(tax);
+	Cit* cit = dynamic_cast<Cit*>(tax);
+	Zus* zus = dynamic_cast<Zus*>(tax);
+
+	return pit ? "pit" : vat ? "vat" : pon ? "pon" : cit ? "cit" : zus ? "zus" : "unknown";
+}
+
+void saveToJson(std::string filename, std::vector<Client*> client_base) {
     ordered_json data_to_save;
 
-    for (auto const& client : client_base) {
-        std::vector<Income> client_incomes = client.getIncomes();
+    for (Client* client : client_base) {
+        std::vector<Income> client_incomes = client->getIncomes();
+
+		Person* osoba = dynamic_cast<Person*>(client);
+		Company* firma = dynamic_cast<Company*>(client);
 
         ordered_json client_info;
 
-		client_info["info"]["Client_Name"] = client.getName();
+		client_info["info"]["client_type"] = osoba ? "osoba" : "firma";
+		client_info["info"]["Client_Name"] = client->getName();
 
-		for (int i = 0; i <= client_incomes.size() - 1; ++i)
+		if (client->getIncomes().size() == 0)
+			continue;
+
+		for (Income current_income : client_incomes)
 		{
-			Income current_income = client_incomes[i];
-			client_info["info"]["Client_Incomes"][std::to_string(current_income.id)] = current_income.amount;
+			client_info["info"]["Client_Incomes"][std::to_string(current_income.id)]["amount"] = current_income.amount;
+			client_info["info"]["Client_Incomes"][std::to_string(current_income.id)]["tax"] = getTaxName(current_income);
+			client_info["info"]["Client_Incomes"][std::to_string(current_income.id)]["paid"] = current_income.paid;
 		}
 
-		data_to_save["Client_ID"][std::to_string(client.getID())] = client_info;
+		data_to_save["Client_ID"][std::to_string(client->getID())] = client_info;
     }
 
 	std::ofstream file(filename);
