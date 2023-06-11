@@ -37,6 +37,7 @@ namespace PROIPODATKIUnitTests
 
 		TEST_METHOD(CreatePersonAndAddIncome)
 		{
+			TaxSystem system;
 			Person p1(21, "xyz");
 			Income new_inc(5000, p1.getTaxes()[pit], 213);
 			Assert::AreEqual(850, new_inc.toPay, 0.01);
@@ -47,6 +48,7 @@ namespace PROIPODATKIUnitTests
 
 		TEST_METHOD(PersonWithMultipleIncomes)
 		{
+			TaxSystem system;
 			Person p2(22, "lkkl");
 			Income first_inc(5000, p2.getTaxes()[pit], 213);
 			Income sec_inc(20000, p2.getTaxes()[pon], 214);
@@ -57,6 +59,7 @@ namespace PROIPODATKIUnitTests
 
 		TEST_METHOD(CreateCompanyAndAddIncomes)
 		{
+			TaxSystem system;
 			Company c1(21, "xyz");
 			Income new_inc(5000, c1.getTaxes()[cit], 213);
 			Assert::AreEqual(950, new_inc.toPay, 0.01);
@@ -69,6 +72,7 @@ namespace PROIPODATKIUnitTests
 
 		TEST_METHOD(MarkIncomeAsPaid)
 		{
+			TaxSystem system;
 			Company c1(21, "xyz");
 			Income new_inc(5000, c1.getTaxes()[cit], 213);
 			c1.addIncome(new_inc);
@@ -86,6 +90,7 @@ namespace PROIPODATKIUnitTests
 
 		TEST_METHOD(CheckWhetherClientHasIncome)
 		{
+			TaxSystem system;
 			Company c1(21, "xyz");
 			Income new_inc(5000, c1.getTaxes()[cit], 213);
 
@@ -97,12 +102,31 @@ namespace PROIPODATKIUnitTests
 
 		}
 	};
-	TEST_CLASS(PROIPODATKIUnitTests)
+	TEST_CLASS(PROITaxSystem)
 	{
 	public:
-		
-		TEST_METHOD(TestMethod1)
+
+		TEST_METHOD(StandardInsertClient)
 		{
+			TaxSystem system;
+			Client* client = new Person(1, "Name");
+			system.addClient(client);
+
+			Assert::AreEqual(std::string("Name"), system.searchByClientID(1)->getName());
+		}
+		TEST_METHOD(StandardInitNoGivenID)
+		{
+			TaxSystem system;
+
+			Assert::ExpectException<std::runtime_error>([&system] {system.searchByClientID(0); });
+		}
+		TEST_METHOD(StandardInsertIncome)
+		{
+			TaxSystem system;
+			Client* client = new Person(1, "Name");
+			system.addClient(client);
+
+			Assert::AreEqual(std::string("Name"), system.searchByClientID(1)->getName());
 		}
 	};
 	TEST_CLASS(PROITax)
