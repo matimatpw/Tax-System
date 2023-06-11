@@ -37,7 +37,7 @@ Client& TaxSystem::searchByIncome(size_t searchID)
 
 void TaxSystem::markPaid(size_t searchID)
 {
-	Client toMark = searchByIncome(searchID);
+	Client& toMark = searchByIncome(searchID);
 	toMark.markPaid(searchID);
 }
 

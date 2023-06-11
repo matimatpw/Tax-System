@@ -3,6 +3,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+
 std::ostream& displayClientInfo(std::ostream& os, Client& my_client) {
 	os << "Nazwa >" << my_client.getName() << "\n";
 	os << "ID >" << my_client.getID() << "\n";
@@ -59,6 +60,26 @@ Client& findClient(int my_choice, size_t id, TaxSystem& my_system) {
 		throw std::invalid_argument("Wrong number\n");
 	}
 }
+
+//template<typename T>
+//std::unique_ptr<T> makePointer(Client& my_client) {
+//	return std::make_unique<T>(static_cast<T&>(my_client));
+//}
+
+std::vector<Tax*> getTaxes(size_t id, TaxSystem& my_sys) {
+	Client& my_client = findClient(2, id, my_sys);
+	std::unique_ptr<Client> my_ptr;
+
+	if (Person* person = dynamic_cast<Person*>(&my_client)) {
+		return person->getPersonTaxes();
+	}
+	else if (Company* company = dynamic_cast<Company*>(&my_client)) {
+		return company->getCompanyTaxes();
+	}
+	else {
+		throw std::invalid_argument("Not derived class\n");		// unlikely(impossible) to happen..
+	}	
+}
 //TODO ID klienta trzeba automatycznie jakos ustawiac np. incermentacja
 
 void print_output() {
@@ -70,7 +91,7 @@ void print_output() {
 
 int main()
 {
-	size_t my_idx = 0;
+	size_t my_idx = 0;//id of clients (incremented each addklient)
 	TaxSystem system;
 	bool is_valid;
 
@@ -157,11 +178,25 @@ int main()
 				
 				std::cout << "Wprowadz ID klienta: \n> ";//TODO  funkcja addIncome , nwm jak podawac tax.?
 				std::cin >> my_id;
-				//tutaj zapytac jaki podatek klient chce uwzglednic w przychodzie
-				std::cout << "Wprowadz kwote przychodu: \n> ";//TODO  funkcja addIncome , nwm jak podawac tax.?
-				std::cin >> my_amount;
-				is_valid = true;
+				try {
+					std::vector<Tax*> taxes = getTaxes(my_id, system);
+					std::cout << "Jaki podatek chcesz uwzglednic: \n";
+					for (Tax* tax: taxes) {
+						std::cout << ">" << tax->getName() << "\n";
+					}
+					is_valid = true;
+				}
+				catch (std::runtime_error r) {
+					std::cout << r.what() << std::endl;
+				}
+				catch (std::invalid_argument e){
+					std::cout << e.what() << std::endl;
+				}
 			}
+				//tutaj zapytac jaki podatek klient chce uwzglednic w przychodzie
+			std::cout << "Wprowadz kwote przychodu: \n> ";//TODO  funkcja addIncome , nwm jak podawac tax.?
+			std::cin >> my_amount;
+			
 			print_output();
 			break;
 		}

@@ -67,6 +67,10 @@ bool Client::hasIncome(size_t searchID)
 	return false;
 }
 
+Client::~Client()
+{
+}
+
 //void Client::displayInfo(std::ostream& os) const
 //{
 //	
@@ -101,6 +105,12 @@ std::vector<Tax*> Person::getPersonTaxes() const
 	return person_taxes;
 }
 
+Person::~Person()
+{
+	for (Tax* tax : person_taxes)
+		delete tax;
+}
+
 
 
 
@@ -128,6 +138,12 @@ Company::Company(size_t id, std::string name, std::vector<Income> wplywy_firmy)
 std::vector<Tax*> Company::getCompanyTaxes() const
 {
 	return company_taxes;
+}
+
+Company::~Company()
+{
+	for (Tax* tax : company_taxes)
+		delete tax;
 }
 
 
