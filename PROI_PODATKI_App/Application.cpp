@@ -91,15 +91,15 @@ int main()
 	system.addClient(&a);
 
 	Company b(70, "company", {});
-	Income new_inc2(600, b.getCompanyTaxes()[cit], 30);
-	Income new_inc3(600, b.getCompanyTaxes()[cit], 31);
+	Income new_inc2(600, b.getTaxes()[cit], 30);
+	Income new_inc3(600, b.getTaxes()[cit], 31);
 	//system.addIncome(new_inc3);
 	system.addClient(&b);
 
-	system.addIncome(69, 101, a.getPersonTaxes()[pit]);
+	system.addIncome(69, 101, a.getTaxes()[pit]);
 
-	system.addIncome(70, 202, b.getCompanyTaxes()[cit]);
-	system.addIncome(70, 303, b.getCompanyTaxes()[cit]);
+	system.addIncome(70, 202, b.getTaxes()[cit]);
+	system.addIncome(70, 303, b.getTaxes()[cit]);
 	//-----
 
 
@@ -193,11 +193,12 @@ int main()
 					//--------------------------------------------------------------x
 					/*Tax* tax = new Zus; */
 					Client* my_client = findClient(2, my_id, system);
+					std::vector<Tax*> taxes = my_client->getTaxes();
 					
 					//std::cout << "Jaki podatek chcesz uwzglednic: \n";
-					//for (Tax* tax: taxes) {
-					//	std::cout << ">" << tax->getName() << "\n";
-					//}
+					for (Tax* tax: taxes) {
+						std::cout << ">" << tax->getName() << "\n";
+					}
 					//--------------------------------------------------------------x
 					//system.addIncome(my_id, my_amount, tax); // <-- tutaj co podawac jako TAX !!!!
 					is_valid = true;

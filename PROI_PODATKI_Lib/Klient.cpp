@@ -98,7 +98,7 @@ Person::Person(size_t id, std::string name, std::vector<Income> wplywy_osoby)
 	this->Incomes = wplywy_osoby;
 }
 
-std::vector<Tax*> Person::getPersonTaxes() const
+std::vector<Tax*> Person::getTaxes()
 {
 	return person_taxes;
 }
@@ -140,7 +140,7 @@ Company::Company(size_t id, std::string name, std::vector<Income> wplywy_firmy)
 	this->Incomes = wplywy_firmy;
 }
 
-std::vector<Tax*> Company::getCompanyTaxes() const
+std::vector<Tax*> Company::getTaxes()
 {
 	return company_taxes;
 }
