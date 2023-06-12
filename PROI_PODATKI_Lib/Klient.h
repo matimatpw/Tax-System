@@ -31,6 +31,7 @@ protected:
 	std::vector<Income> Incomes{};
 public:
 	virtual ~Client() = 0;
+	virtual std::vector<Tax*> getTaxes() = 0;
 	size_t getID() const noexcept;
 	std::string getName() const noexcept;
 	std::vector<Income> getIncomes() const;
@@ -55,10 +56,12 @@ private:
 
 public:
 	Person(size_t id, std::string name, std::vector<Income> person_incomes = {});
-	std::vector<Tax*> getPersonTaxes() const;
-
+	std::vector<Tax*> getTaxes();
+	static void initTaxes();
+	static void destroyTaxes();
+	//~Person();
 	void displayInfo(std::ostream& os) const;
-	~Person();
+	/*~Person();*/
 	
 };
 
@@ -70,9 +73,11 @@ private:
 
 public:
 	Company(size_t id, std::string name, std::vector<Income> company_incomes = {});
-	std::vector<Tax*> getCompanyTaxes() const;
-
+	std::vector<Tax*> getTaxes();
+	static void initTaxes();
+	static void destroyTaxes();
+	//~Company();
 	void displayInfo(std::ostream& os) const;
-	~Company();
+	/*~Company();*/
 };
 

@@ -48,7 +48,7 @@ void loadFromJson(std::string filename, std::vector<Client*>& client_base) {
                 std::string taxType = incomeInfo["tax"];
                 personTaxes taxEnum = osobyMap[taxType];
 
-                Income newIncome(amount, newClient.getPersonTaxes()[taxEnum], incomeId);
+                Income newIncome(amount, newClient.getTaxes()[taxEnum], incomeId);
                 newClient.addIncome(newIncome);
 
             }
@@ -66,7 +66,7 @@ void loadFromJson(std::string filename, std::vector<Client*>& client_base) {
                 std::string taxType = incomeInfo["tax"];
                 companyTaxes taxEnum = firmaMap[taxType];
 
-                Income newIncome(amount, newClient.getCompanyTaxes()[taxEnum], incomeId);
+                Income newIncome(amount, newClient.getTaxes()[taxEnum], incomeId);
                 newClient.addIncome(newIncome);
 
             }

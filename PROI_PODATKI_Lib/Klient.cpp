@@ -67,6 +67,8 @@ bool Client::hasIncome(size_t searchID)
 	return false;
 }
 
+
+
 //void Client::displayInfo(std::ostream& os) const
 //{
 //	
@@ -96,10 +98,27 @@ Person::Person(size_t id, std::string name, std::vector<Income> wplywy_osoby)
 	this->Incomes = wplywy_osoby;
 }
 
-std::vector<Tax*> Person::getPersonTaxes() const
+std::vector<Tax*> Person::getTaxes()
 {
 	return person_taxes;
 }
+
+void Person::initTaxes()
+{
+	person_taxes = { new Pit, new Pon, new Zus };
+}
+
+void Person::destroyTaxes()
+{
+	for (Tax* tax : person_taxes)
+		delete tax;
+}
+
+//Person::~Person()
+//{
+//	for (Tax* tax : person_taxes)
+//		delete tax;
+//}
 
 
 
@@ -109,16 +128,15 @@ void Person::displayInfo(std::ostream& os) const
 	os << "Imie i Nazwisko >" << this->getName() << "\n";
 	os << "ID >" << this->getID() << "\n";
 	os << "Income info :" << "\n";
-
 }
 
 Client::~Client() = default;
 
-Person::~Person()
-{
-	for (Tax* tax : person_taxes)
-		delete tax;
-}
+//Person::~Person()
+//{
+//	for (Tax* tax : person_taxes)
+//		delete tax;
+//}
 
 
 
@@ -133,10 +151,27 @@ Company::Company(size_t id, std::string name, std::vector<Income> wplywy_firmy)
 	this->Incomes = wplywy_firmy;
 }
 
-std::vector<Tax*> Company::getCompanyTaxes() const
+std::vector<Tax*> Company::getTaxes()
 {
 	return company_taxes;
 }
+
+void Company::initTaxes()
+{
+	company_taxes = { new Vat, new Cit, new Zus };
+}
+
+void Company::destroyTaxes()
+{
+	for (Tax* tax : company_taxes)
+		delete tax;
+}
+
+//Company::~Company()
+//{
+//	for (Tax* tax : company_taxes)
+//		delete tax;
+//}
 
 
 
@@ -147,11 +182,11 @@ void Company::displayInfo(std::ostream& os) const
 	os << "ID >" << this->getID() << "\n";
 	os << "Income info :" << "\n";
 }
-Company::~Company()
-{
-	for (Tax* tax : company_taxes)
-		delete tax;
-}
+//Company::~Company()
+//{
+//	for (Tax* tax : company_taxes)
+//		delete tax;
+//}
 
 //std::ostream& operator<<(std::ostream& os, const Client& my_client)
 //{
@@ -161,8 +196,8 @@ Company::~Company()
 
 
 
-std::vector<Tax*> Company::company_taxes = { new Vat, new Cit, new Zus};
-std::vector<Tax*> Person::person_taxes = { new Pit, new Pon, new Zus };
 std::vector<size_t> Client::ID_base = {};
 
 
+std::vector<Tax*> Company::company_taxes = {};
+std::vector<Tax*> Person::person_taxes = {};
