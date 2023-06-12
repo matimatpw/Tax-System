@@ -26,17 +26,9 @@ namespace PROIPODATKIUnitTests
 			Assert::ExpectException<std::runtime_error>([] {Person p1(21, "ABc12D"); });
 		}
 
-		/*TEST_METHOD(TryingToCreateClientWithSameID)
-		{
-			// TODO this test should pass
-				
-			Person p1(21, "xyz");
-			Person p2(214, "xsyz");
-			Assert::ExpectException<std::runtime_error>([] {Person p3(21, "abc"); });
-		}*/
-
 		TEST_METHOD(CreatePersonAndAddIncome)
 		{
+			Person::initTaxes();
 			Person p1(21, "xyz");
 			Income new_inc(5000, p1.getTaxes()[pit], 213);
 			Assert::AreEqual(850, new_inc.toPay, 0.01);
@@ -47,6 +39,7 @@ namespace PROIPODATKIUnitTests
 
 		TEST_METHOD(PersonWithMultipleIncomes)
 		{
+			Person::initTaxes();
 			Person p2(22, "lkkl");
 			Income first_inc(5000, p2.getTaxes()[pit], 213);
 			Income sec_inc(20000, p2.getTaxes()[pon], 214);
@@ -57,6 +50,7 @@ namespace PROIPODATKIUnitTests
 
 		TEST_METHOD(CreateCompanyAndAddIncomes)
 		{
+			Company::initTaxes();
 			Company c1(21, "xyz");
 			Income new_inc(5000, c1.getTaxes()[cit], 213);
 			Assert::AreEqual(950, new_inc.toPay, 0.01);
@@ -69,6 +63,7 @@ namespace PROIPODATKIUnitTests
 
 		TEST_METHOD(MarkIncomeAsPaid)
 		{
+			Company::initTaxes();
 			Company c1(21, "xyz");
 			Income new_inc(5000, c1.getTaxes()[cit], 213);
 			c1.addIncome(new_inc);
@@ -86,6 +81,7 @@ namespace PROIPODATKIUnitTests
 
 		TEST_METHOD(CheckWhetherClientHasIncome)
 		{
+			Company::initTaxes();
 			Company c1(21, "xyz");
 			Income new_inc(5000, c1.getTaxes()[cit], 213);
 

@@ -89,12 +89,8 @@ Person::Person(size_t id, std::string name, std::vector<Income> wplywy_osoby)
 		throw std::runtime_error("Name cannot be empty");
 	if (name.find_first_of("0123456789") != std::string::npos)
 		throw std::runtime_error("There can't be any numbers in Person's name");
-	//TODO implement this method
-	/*if (isInIDBase(id)) 
-		throw std::runtime_error("ID is already in the base");*/
 	this->name = name;
 	this->ID = id;
-	/*ID_base.push_back(id);*/
 	this->Incomes = wplywy_osoby;
 }
 
