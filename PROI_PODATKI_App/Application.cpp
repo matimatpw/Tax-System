@@ -47,16 +47,17 @@ std::ostream& displayClientInfo(std::ostream& os, Client* my_client) {
 
 Client* createClient(int my_choice, size_t& index_XD) {
 	std::string name;
+	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	if (my_choice == 1) {
 		std::cout << "Wprowadz Imie i Nazwisko\n> ";
-		std::cin >> name;
+		std::getline(std::cin, name);
 		Person* client = new Person(size_t(index_XD),name, {});
 		index_XD++;
 		return client;
 	}
 	else if (my_choice == 2) {
 		std::cout << "Wprowadz nazwe Firmy\n> ";
-		std::cin >> name;
+		std::getline(std::cin, name);
 		Company* client = new Company(size_t(index_XD),name, {});
 		index_XD++;
 		return client;
