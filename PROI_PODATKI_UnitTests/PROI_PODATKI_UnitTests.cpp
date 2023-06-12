@@ -142,5 +142,38 @@ namespace PROIPODATKIUnitTests
 			delete tax_ptr;
 			
 		}
+		TEST_METHOD(Vatgetnametest)
+		{
+			Vat tax;
+			Assert::AreEqual(std::string("Vat"), tax.getName());
+		}
+		TEST_METHOD(Pitgetnametest)
+		{
+			Pit tax;
+			Assert::AreEqual(std::string("Pit"), tax.getName());
+		}
+		TEST_METHOD(Citgetnametest)
+		{
+			Cit tax;
+			Assert::AreEqual(std::string("Cit"), tax.getName());
+		}
+		TEST_METHOD(Pongetnametest)
+		{
+			Pon tax;
+			Assert::AreEqual(std::string("Pon"), tax.getName());
+		}
+		TEST_METHOD(Zusgetnametest)
+		{
+			Zus tax;
+			Assert::AreEqual(std::string("Zus"), tax.getName());
+		}
+		TEST_METHOD(Taxgetnametest)
+		{
+			Tax* tax_ptr = new Vat;
+			Assert::AreEqual(std::string("Vat"), tax_ptr->getName());
+			delete tax_ptr;
+
+		}
+
 	};
 }
