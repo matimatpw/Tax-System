@@ -66,8 +66,16 @@ switch()
 -> Zapisywanie do Pliku (.json)
 
 
+    *Dokumentacja*
 
-    
+
+Nazwa
+Co to robi
+Jak odpalac
+Jakie ma Klasy
+Kto co robil
+Jak wrazenia jak sie podobalo xd
+
 
 
 
