@@ -96,11 +96,10 @@ Person::Person(size_t id, std::string name, std::vector<Income> wplywy_osoby)
 	this->ID = id;
 	this->Incomes = wplywy_osoby;
 
-	if (personCounter == 0)
+	if (!(personCounter++))
 	{
 		Person::initTaxes();
 	}
-	personCounter++;
 }
 
 std::vector<Tax*> Person::getTaxes()
@@ -130,8 +129,7 @@ Client::~Client() = default;
 
 Person::~Person()
 {
-	personCounter--;
-	if (personCounter == 0)
+	if (!(--personCounter))
 	{
 		Person::destroyTaxes();
 	}
@@ -146,11 +144,10 @@ Company::Company(size_t id, std::string name, std::vector<Income> wplywy_firmy)
 	/*ID_base.push_back(id);*/
 	this->Incomes = wplywy_firmy;
 
-	if (companyCounter == 0)
+	if (!(companyCounter++))
 	{
 		Company::initTaxes();
 	}
-	companyCounter++;
 }
 
 std::vector<Tax*> Company::getTaxes()
@@ -171,8 +168,7 @@ void Company::destroyTaxes()
 
 Company::~Company()
 {
-	companyCounter--;
-	if (companyCounter == 0)
+	if (!(--companyCounter))
 	{
 		Company::destroyTaxes();
 	}
