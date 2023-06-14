@@ -300,7 +300,7 @@ int main()
 			// load clients from json file
 			while (!is_valid) {
 				std::string filename{};
-				std::cout << "Podaj nazwe pliku z ktorego chcesz zaladowac dane:\n";
+				std::cout << "Podaj nazwe pliku z ktorego chcesz zaladowac dane:\n>";
 				std::cin >> filename;
 				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore newline
 				try {
@@ -320,7 +320,25 @@ int main()
 		}
 		case PayTax:
 		{
-			//TODO: pay tax from income of given id
+			// pay tax from income of given id
+			while (!is_valid) {
+				size_t id;
+				std::cout << "Podaj id wplywu ktory ma zostac oplacony:\n>";
+				std::cin >> id;
+				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore newline
+				try {
+
+					system.markPaid(id);
+					is_valid = true;
+				}
+				catch (std::runtime_error r) {
+					std::cout << r.what() << std::endl;
+				}
+				catch (std::invalid_argument e) {
+					std::cout << e.what() << std::endl;
+				}
+			}
+			print_output();
 			break;
 		}
 
