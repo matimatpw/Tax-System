@@ -27,7 +27,7 @@ void saveToJson(std::string filename, std::vector<Client*> client_base) {
 
         ordered_json client_info;
 
-		client_info["info"]["client_type"] = dynamic_cast<Person*>(client) ? "osoba" : "firma";
+		client_info["info"]["client_type"] = dynamic_cast<Person*>(client) ? "person" : "company";
 		client_info["info"]["Client_Name"] = client->getName();
 
 		if (client->getIncomes().size() == 0)

@@ -8,22 +8,24 @@
 using ordered_json = nlohmann::ordered_json;
 using namespace nlohmann;
 
-std::map<std::string, personTaxes> osobyMap = {
+std::map<std::string, personTaxes> personTaxMap = {
     {"pit", personTaxes::pit},
     {"pon", personTaxes::pon},
     {"zusOsoba", personTaxes::zusOsoba}
 };
 
-std::map<std::string, companyTaxes> firmaMap = {
+std::map<std::string, companyTaxes> companyMap = {
     {"vat", companyTaxes::vat},
     {"cit", companyTaxes::cit},
     {"zusFirma", companyTaxes::zusFirma}
 };
 
-void loadFromJson(std::string filename, std::vector<Client*>& client_base) {
+void loadFromJson(std::string filename, TaxSystem& taxSystem) {
+
     std::ifstream file(filename);
     if (!file.is_open())
         throw std::runtime_error("Can't open json source file");
+    
     json source = json::parse(file);
 
     size_t counter = 0;
@@ -36,48 +38,33 @@ void loadFromJson(std::string filename, std::vector<Client*>& client_base) {
         std::string clientType = clientInfo["info"]["client_type"];
         std::string clientName = clientInfo["info"]["Client_Name"];
 
-        if (clientType == "osoba") {
-            Person newClient(clientID, clientName, {});
-            const auto& clientIncomes = clientInfo["info"]["Client_Incomes"];
-            for (const auto& incomeEntry : clientIncomes.items()) {
+        Client* newClient = nullptr;
 
-                size_t incomeId = std::stoull(incomeEntry.key());
-                const auto& incomeInfo = incomeEntry.value();
-
-                double amount = incomeInfo["amount"];
-                std::string taxType = incomeInfo["tax"];
-                personTaxes taxEnum = osobyMap[taxType];
-
-                Income newIncome(amount, newClient.getTaxes()[taxEnum], incomeId);
-                newClient.addIncome(newIncome);
-
-            }
-            client_base.push_back(&newClient);
-        }
-        else if (clientType == "firma") {
-            Company newClient(clientID, clientName, {});
-            const auto& clientIncomes = clientInfo["info"]["Client_Incomes"];
-            for (const auto& incomeEntry : clientIncomes.items()) {
-
-                size_t incomeId = std::stoull(incomeEntry.key());
-                const auto& incomeInfo = incomeEntry.value();
-
-                double amount = incomeInfo["amount"];
-                std::string taxType = incomeInfo["tax"];
-                companyTaxes taxEnum = firmaMap[taxType];
-
-                Income newIncome(amount, newClient.getTaxes()[taxEnum], incomeId);
-                newClient.addIncome(newIncome);
-
-            }
-            client_base.push_back(&newClient);
-        }
+        if (clientType == "person")
+            newClient = new Person(clientID, clientName, {});
+        else if (clientType == "company")
+            newClient = new Company(clientID, clientName, {});
         else
             throw std::runtime_error("Error reading from file: wrong client type");
+        
+        const auto& clientIncomes = clientInfo["info"]["Client_Incomes"];
+        for (const auto& incomeEntry : clientIncomes.items()) {
 
+                size_t incomeId = std::stoull(incomeEntry.key());
+                const auto& incomeInfo = incomeEntry.value();
+
+                double amount = incomeInfo["amount"];
+                std::string taxType = incomeInfo["tax"];
+                personTaxes taxEnum = personTaxMap[taxType];
+
+                Income newIncome(amount, newClient->getTaxes()[taxEnum], incomeId);
+                newClient->addIncome(newIncome);
+
+            }
+        taxSystem.addClient(newClient);
     }
 
-    if (counter == client_base.size())
+    if (counter == taxSystem.get_clients_base().size())
     {
         std::cout << "Loaded from json file succesfully" << std::endl;
     }
