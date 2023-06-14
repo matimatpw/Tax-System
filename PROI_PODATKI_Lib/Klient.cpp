@@ -2,6 +2,15 @@
 #include <iostream>
 #include <exception>
 
+
+std::vector<size_t> Client::ID_base = {};
+
+std::vector<Tax*> Company::company_taxes = {};
+std::vector<Tax*> Person::person_taxes = {};
+
+size_t Company::companyCounter = 0;
+size_t Person::personCounter = 0;
+
 size_t Client::getID() const noexcept
 {
 	return ID;
@@ -67,16 +76,10 @@ bool Client::hasIncome(size_t searchID)
 	return false;
 }
 
-
-
 //void Client::displayInfo(std::ostream& os) const
 //{
 //	
 //}
-
-
-
-
 
 //std::ostream& Client::readIncome(std::ostream& os)
 //{
@@ -92,6 +95,12 @@ Person::Person(size_t id, std::string name, std::vector<Income> wplywy_osoby)
 	this->name = name;
 	this->ID = id;
 	this->Incomes = wplywy_osoby;
+
+	if (personCounter == 0)
+	{
+		Person::initTaxes();
+	}
+	personCounter++;
 }
 
 std::vector<Tax*> Person::getTaxes()
@@ -110,15 +119,6 @@ void Person::destroyTaxes()
 		delete tax;
 }
 
-//Person::~Person()
-//{
-//	for (Tax* tax : person_taxes)
-//		delete tax;
-//}
-
-
-
-
 void Person::displayInfo(std::ostream& os) const
 {
 	os << "Imie i Nazwisko >" << this->getName() << "\n";
@@ -128,14 +128,14 @@ void Person::displayInfo(std::ostream& os) const
 
 Client::~Client() = default;
 
-//Person::~Person()
-//{
-//	for (Tax* tax : person_taxes)
-//		delete tax;
-//}
-
-
-
+Person::~Person()
+{
+	personCounter--;
+	if (personCounter == 0)
+	{
+		Person::destroyTaxes();
+	}
+}
 
 Company::Company(size_t id, std::string name, std::vector<Income> wplywy_firmy)
 {
@@ -145,6 +145,12 @@ Company::Company(size_t id, std::string name, std::vector<Income> wplywy_firmy)
 	this->ID = id;
 	/*ID_base.push_back(id);*/
 	this->Incomes = wplywy_firmy;
+
+	if (companyCounter == 0)
+	{
+		Company::initTaxes();
+	}
+	companyCounter++;
 }
 
 std::vector<Tax*> Company::getTaxes()
@@ -163,14 +169,14 @@ void Company::destroyTaxes()
 		delete tax;
 }
 
-//Company::~Company()
-//{
-//	for (Tax* tax : company_taxes)
-//		delete tax;
-//}
-
-
-
+Company::~Company()
+{
+	companyCounter--;
+	if (companyCounter == 0)
+	{
+		Company::destroyTaxes();
+	}
+}
 
 void Company::displayInfo(std::ostream& os) const
 {
@@ -178,22 +184,10 @@ void Company::displayInfo(std::ostream& os) const
 	os << "ID >" << this->getID() << "\n";
 	os << "Income info :" << "\n";
 }
-//Company::~Company()
-//{
-//	for (Tax* tax : company_taxes)
-//		delete tax;
-//}
+
 
 //std::ostream& operator<<(std::ostream& os, const Client& my_client)
 //{
 //	my_client.displayInfo(os);
 //	return os;
 //}
-
-
-
-std::vector<size_t> Client::ID_base = {};
-
-
-std::vector<Tax*> Company::company_taxes = {};
-std::vector<Tax*> Person::person_taxes = {};

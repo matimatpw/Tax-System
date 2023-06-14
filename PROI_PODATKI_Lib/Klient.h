@@ -53,15 +53,15 @@ class Person : public Client
 {
 private:
 	static std::vector<Tax*> person_taxes; // Beda odgornie ustalane
+	static size_t personCounter;
 
 public:
 	Person(size_t id, std::string name, std::vector<Income> person_incomes = {});
 	std::vector<Tax*> getTaxes();
 	static void initTaxes();
 	static void destroyTaxes();
-	//~Person();
+	~Person();
 	void displayInfo(std::ostream& os) const;
-	/*~Person();*/
 	
 };
 
@@ -70,14 +70,14 @@ class Company : public Client
 {
 private:
 	 static std::vector<Tax*> company_taxes;
+	 static size_t companyCounter;
 
 public:
 	Company(size_t id, std::string name, std::vector<Income> company_incomes = {});
 	std::vector<Tax*> getTaxes();
 	static void initTaxes();
 	static void destroyTaxes();
-	//~Company();
+	~Company();
 	void displayInfo(std::ostream& os) const;
-	/*~Company();*/
 };
 

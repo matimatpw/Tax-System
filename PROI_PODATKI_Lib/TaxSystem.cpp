@@ -5,22 +5,17 @@
  
 TaxSystem::TaxSystem()
 {
-	Person::initTaxes();
-	Company::initTaxes();
+	//Person::initTaxes();
+	//Company::initTaxes();
 }
 
  
 TaxSystem::~TaxSystem()
 {
-	Person::destroyTaxes();
-	Company::destroyTaxes();
+	//Person::destroyTaxes();
+	//Company::destroyTaxes();
 	for (Client* client : clients)
 		delete client;
-}
-
- 
-TaxSystem::TaxSystem(std::string path_to_file)
-{
 }
 
 

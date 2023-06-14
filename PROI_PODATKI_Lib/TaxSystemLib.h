@@ -10,7 +10,6 @@ private:
 public:
 	TaxSystem();
 	~TaxSystem();
-	TaxSystem(std::string path_to_file);
 
 	void addIncome(size_t clientID, double amount, Tax* tax);
 	Client& searchByIncome(size_t searchID);
