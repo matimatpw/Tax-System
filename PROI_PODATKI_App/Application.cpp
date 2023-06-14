@@ -30,7 +30,7 @@ std::ostream& displayClientInfo(std::ostream& os, Client* my_client) {
 	
 	int i = 0;
 	int MAX_ITER = 3;
-	for (auto& income : my_client->getIncomes()){
+	for (auto& income : my_client->getIncomes()) {
 		os << ">ID - " << income.id << "\n";
 		os << ">Amount - " << income.amount << "\n";
 		os << ">Tax (" << income.tax->getName() << ") - " << income.toPay << "\n";
@@ -91,7 +91,7 @@ void print_output() {
 	std::cout << "\nDone :)\n";
 	std::chrono::seconds timer(3);
 	std::this_thread::sleep_for(timer);    //  czysczenie konsoli (czyszczenie 3 sekundy przed)
-	system("CLS");
+	system("CLS"); // windows
 }
 
 int main()
@@ -248,15 +248,20 @@ int main()
 
 			std::cin.clear();
 			while (!is_valid) {
-				std::cout << "Po czym chcesz wyszukac klienta?:\n";
-				std::cout << "1-> ID wplywu\n";
-				std::cout << "2-> ID klienta\n";
-				std::cout << "Wybierz opcje:\n> ";
-				std::cin >> choice;
-				std::cout << "Wprowadz ID:\n> ";
-				std::cin >> my_id;
-				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore newline
 				try {
+					std::cout << "Po czym chcesz wyszukac klienta?:\n";
+					std::cout << "1-> ID wplywu\n";
+					std::cout << "2-> ID klienta\n";
+					std::cout << "Wybierz opcje:\n> ";
+					std::cin >> choice;
+					handleInputError(std::cin);
+					if (choice > 2 || choice < 1)
+						throw std::invalid_argument("Wrong choice!");
+					std::cout << "Wprowadz ID:\n> ";
+					std::cin >> my_id;
+					handleInputError(std::cin);
+					
+					std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore newline
 					Client* client = findClient(choice, my_id, system);//tutaj
 					is_valid = true;
 					displayClientInfo(std::cout, client);
