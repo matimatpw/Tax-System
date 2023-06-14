@@ -70,10 +70,15 @@ switch()
 
 
 Nazwa
+
 Co to robi
+
 Jak odpalac
+
 Jakie ma Klasy
+
 Kto co robil
+
 Jak wrazenia jak sie podobalo xd
 
 
