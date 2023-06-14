@@ -71,10 +71,10 @@ Client* createClient(int my_choice, size_t& index_XD) {
 
 Client* findClient(int my_choice, size_t id, TaxSystem& my_system) {
 	if (my_choice == 1) {
-		return &(my_system.searchByIncome(id));
+		return (my_system.searchByIncome(id));
 	}
 	else if (my_choice == 2) {
-		return &(my_system.searchByClientID(id));
+		return (my_system.searchByClientID(id));
 	}
 	else {
 		throw std::invalid_argument("Wrong number\n");
@@ -138,6 +138,7 @@ int main()
 		std::cout << "6 -> Load Clients From Json File \n";
 		std::cout << "7 -> Pay Tax From Income Of Given ID \n";
 		std::cout << "8 ->Quit \n";
+		//std::cout << "9 ->Lobby\n"; //TODO
 		std::cout << "> ";
 		std::cin >> input;
 
@@ -183,7 +184,7 @@ int main()
 		case RemoveClient:
 		{
 			while (!is_valid) {
-				std::cout << "Wprowadz ID Klienta:\n> ";
+				std::cout << "Insert Client ID:\n> ";
 				std::cin >> choice;
 				try {
 					handleInputError(std::cin);
@@ -207,17 +208,17 @@ int main()
 			while (!is_valid) {
 
 				try {
-					std::cout << "Wprowadz ID klienta: \n> ";
+					std::cout << "Insert Client ID: \n> ";
 					std::cin >> my_id;
 					handleInputError(std::cin);
-					std::cout << "Wprowadz kwote przychodu: \n> ";
+					std::cout << "Insert income amount: \n> ";
 					std::cin >> my_amount;
 					handleInputError(std::cin);
 
 					Client* my_client = findClient(2, my_id, system);
 					std::vector<Tax*> taxes = my_client->getTaxes();
 					
-					std::cout << "Jaki podatek chcesz uwzglednic: \n";
+					std::cout << "What Tax would you like to include: \n";
 					int i = 0;
 					for (Tax* tax: taxes) {
 						std::cout << ++i <<"-> " << tax->getName() << "\n";
@@ -248,19 +249,19 @@ int main()
 		}
 		case SearchClient:
 		{
-
+			
 			std::cin.clear();
 			while (!is_valid) {
 				try {
-					std::cout << "Po czym chcesz wyszukac klienta?:\n";
-					std::cout << "1-> ID wplywu\n";
-					std::cout << "2-> ID klienta\n";
-					std::cout << "Wybierz opcje:\n> ";
+					std::cout << "How do you choose a client!:\n";
+					std::cout << "1-> Income ID \n";
+					std::cout << "2-> Client ID \n";
+					std::cout << "Choose option:\n> ";
 					std::cin >> choice;
 					handleInputError(std::cin);
 					if (choice > 2 || choice < 1)
 						throw std::invalid_argument("Wrong choice!");
-					std::cout << "Wprowadz ID:\n> ";
+					std::cout << "Insert ID:\n> ";
 					std::cin >> my_id;
 					handleInputError(std::cin);
 					
@@ -285,7 +286,7 @@ int main()
 		{
 			while (!is_valid) {
 				std::string filename{};
-				std::cout << "Podaj nazwe pliku do ktorego chcesz zapisac dane:\n";
+				std::cout << "Enter the name of the file to which you want to save the data:\n";
 				std::cin >> filename;
 				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore newline
 				try {
@@ -308,7 +309,7 @@ int main()
 			// load clients from json file
 			while (!is_valid) {
 				std::string filename{};
-				std::cout << "Podaj nazwe pliku z ktorego chcesz zaladowac dane:\n>";
+				std::cout << "Enter the name of the file from which you want to load the data:\n>";
 				std::cin >> filename;
 				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore newline
 				try {
@@ -333,7 +334,7 @@ int main()
 			while (!is_valid) {
 				try {
 					size_t id;	
-					std::cout << "Podaj id wplywu ktory ma zostac oplacony:\n>";
+					std::cout << "Insert Income ID you want to pay:\n>";
 					std::cin >> id;
 					handleInputError(std::cin);
 					std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore newline
@@ -359,7 +360,7 @@ int main()
 
 		default:
 		{
-			std::cout << "> Niepoprawna opcja! <\n";
+			std::cout << "> Wrong Option! <\n";
 		}
 		}
 		// Taxsystem X

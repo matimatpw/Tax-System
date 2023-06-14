@@ -21,34 +21,34 @@ TaxSystem::~TaxSystem()
 
 void TaxSystem::addIncome(size_t clientID, double amount, Tax* tax)
 {
-	Client& client = searchByClientID(clientID);
+	Client* client = searchByClientID(clientID);
 	Income newIncome = Income(amount, tax, current_income_ID);
-	client.addIncome(newIncome);
+	client->addIncome(newIncome);
 	current_income_ID++;
 }
  
-Client& TaxSystem::searchByIncome(size_t searchID)
+Client* TaxSystem::searchByIncome(size_t searchID)
 {
 	for (Client* client : clients)
 		if (client->hasIncome(searchID))
-			return *client;
+			return client;
 	throw std::runtime_error("No income of given ID");
 }
 
 void TaxSystem::markPaid(size_t searchID)
 {
-	Client& toMark = searchByIncome(searchID);
-	toMark.markPaid(searchID);
+	Client* toMark = searchByIncome(searchID);
+	toMark->markPaid(searchID);
 }
 
  
-Client& TaxSystem::searchByClientID(size_t searchID)
+Client* TaxSystem::searchByClientID(size_t searchID)
 {
 	auto place = std::find_if(clients.begin(), clients.end(), [searchID](Client* client) {return searchID == client->getID();});
 	if (place == clients.end())
 		throw std::runtime_error("No client of given ID");
 	else
-		return *(*place);
+		return (*place);
 }
 
  
