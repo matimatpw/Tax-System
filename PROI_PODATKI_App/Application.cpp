@@ -101,21 +101,21 @@ int main()
 	bool is_valid;
 
 	//here for tersting
-	Person a(69, "xd", {});
-	//Income new_inc(500, a.getPersonTaxes()[cit], 20);
-	//a.addIncome(new_inc);
-	system.addClient(&a);
+	//Person a(69, "xd", {});
+	////Income new_inc(500, a.getPersonTaxes()[cit], 20);
+	////a.addIncome(new_inc);
+	//system.addClient(&a);
 
-	Company b(70, "company", {});
-	Income new_inc2(600, b.getTaxes()[cit], 30);
-	Income new_inc3(600, b.getTaxes()[cit], 31);
-	//system.addIncome(new_inc3);
-	system.addClient(&b);
+	//Company b(70, "company", {});
+	//Income new_inc2(600, b.getTaxes()[cit], 30);
+	//Income new_inc3(600, b.getTaxes()[cit], 31);
+	////system.addIncome(new_inc3);
+	//system.addClient(&b);
 
-	system.addIncome(69, 101, a.getTaxes()[pit]);
+	//system.addIncome(69, 101, a.getTaxes()[pit]);
 
-	system.addIncome(70, 202, b.getTaxes()[cit]);
-	system.addIncome(70, 303, b.getTaxes()[cit]);
+	//system.addIncome(70, 202, b.getTaxes()[cit]);
+	//system.addIncome(70, 303, b.getTaxes()[cit]);
 	//-----
 
 
@@ -219,10 +219,18 @@ int main()
 					for (Tax* tax: taxes) {
 						std::cout << ++i <<"-> " << tax->getName() << "\n";
 					}
+					std::cout << ">";
 					std::cin >> choice;
-					system.addIncome(my_id, my_amount, taxes[choice-1]);
+					handleInputError(std::cin);
+
+					system.addIncome(my_id, my_amount, taxes.at(choice - 1));
+					
 					
 					is_valid = true;
+				}
+				catch (std::out_of_range o)
+				{
+					std::cout << o.what() << std::endl;
 				}
 				catch (std::runtime_error r) {
 					std::cout << r.what() << std::endl;
@@ -260,7 +268,9 @@ int main()
 					std::cout << e.what() << std::endl;
 				}
 			}
+			std::cin.get();
 			print_output();
+			
 			break;
 		}
 		case SaveToJson:
@@ -287,7 +297,25 @@ int main()
 		}
 		case LoadFromJson:
 		{
-			//TODO: load clients from json file
+			// load clients from json file
+			while (!is_valid) {
+				std::string filename{};
+				std::cout << "Podaj nazwe pliku z ktorego chcesz zaladowac dane:\n";
+				std::cin >> filename;
+				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore newline
+				try {
+
+					loadFromJson(filename, system);
+					is_valid = true;
+				}
+				catch (std::runtime_error r) {
+					std::cout << r.what() << std::endl;
+				}
+				catch (std::invalid_argument e) {
+					std::cout << e.what() << std::endl;
+				}
+			}
+			print_output();
 			break;
 		}
 		case PayTax:
