@@ -84,6 +84,7 @@ double TaxSystem::calculateAllTaxes()
 {
 	double sum = 0;
 	for (Client* client : clients)
+		//if ((*client)->cal)
 		sum += (*client).calculateTaxAmount();
 	return sum;
 }

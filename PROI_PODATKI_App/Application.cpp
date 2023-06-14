@@ -15,13 +15,14 @@ enum Events {
 	SearchClient = 4,
 	SaveToJson = 5,
 	LoadFromJson = 6,
-	PayTax = 7
+	PayTax = 7,
+	Quit = 8
 };
 
 
 std::ostream& displayClientInfo(std::ostream& os, Client* my_client) {
-	os << "Nazwa >" << my_client->getName() << "\n";
-	os << "ID >" << my_client->getID() << "\n";
+	os << "Name - " << my_client->getName() << "\n";
+	os << "ID - " << my_client->getID() << "\n";
 	os << "Taxes to pay :\n";
 	for (Tax* &tax : my_client->getTaxes()) {
 		os << "> " << tax->getName() << "\n";
@@ -47,16 +48,17 @@ std::ostream& displayClientInfo(std::ostream& os, Client* my_client) {
 
 Client* createClient(int my_choice, size_t& index_XD) {
 	std::string name;
+	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	if (my_choice == 1) {
-		std::cout << "Wprowadz Imie i Nazwisko\n> ";
-		std::cin >> name;
+		std::cout << "Insert Full Name\n> ";
+		std::getline(std::cin, name);
 		Person* client = new Person(size_t(index_XD),name, {});
 		index_XD++;
 		return client;
 	}
 	else if (my_choice == 2) {
-		std::cout << "Wprowadz nazwe Firmy\n> ";
-		std::cin >> name;
+		std::cout << "Insert Company Name\n> ";
+		std::getline(std::cin, name);
 		Company* client = new Company(size_t(index_XD),name, {});
 		index_XD++;
 		return client;
@@ -118,9 +120,10 @@ int main()
 	//system.addIncome(70, 303, b.getTaxes()[cit]);
 	//-----
 
-
+	bool run = true;
 
 	do {
+		std::cin.clear();
 		is_valid = false;
 		size_t my_id;
 		int choice = 0;
@@ -134,6 +137,7 @@ int main()
 		std::cout << "5 -> Save Clients To Json File \n";
 		std::cout << "6 -> Load Clients From Json File \n";
 		std::cout << "7 -> Pay Tax From Income Of Given ID \n";
+		std::cout << "8 ->Quit \n";
 		std::cout << "> ";
 		std::cin >> input;
 
@@ -153,13 +157,13 @@ int main()
 			while (!is_valid)
 			{
 
-				std::cout << "Firma czy Osoba?: \n";
-				std::cout << "1-> Osoba\n";
-				std::cout << "2-> Firma\n> ";
-				std::cin >> choice;
-
 
 				try {
+					std::cout << "Company or Person?: \n";
+					std::cout << "1-> Person\n";
+					std::cout << "2-> Company\n> ";
+					std::cin >> choice;
+					handleInputError(std::cin);
 					Client* client = createClient(choice, my_idx);
 					system.addClient(client);
 					std::cout << "This client ID is: " << my_idx - 1 << "";
@@ -184,7 +188,6 @@ int main()
 				try {
 					handleInputError(std::cin);
 					system.deleteClientByID(size_t(choice));
-					my_idx--;
 					is_valid = true;
 				}
 				catch (std::runtime_error e) {
@@ -311,6 +314,7 @@ int main()
 				try {
 
 					loadFromJson(filename, system);
+
 					is_valid = true;
 				}
 				catch (std::runtime_error r) {
@@ -327,12 +331,12 @@ int main()
 		{
 			// pay tax from income of given id
 			while (!is_valid) {
-				size_t id;
-				std::cout << "Podaj id wplywu ktory ma zostac oplacony:\n>";
-				std::cin >> id;
-				handleInputError(std::cin);
-				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore newline
 				try {
+					size_t id;	
+					std::cout << "Podaj id wplywu ktory ma zostac oplacony:\n>";
+					std::cin >> id;
+					handleInputError(std::cin);
+					std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore newline
 
 					system.markPaid(id);
 					is_valid = true;
@@ -345,6 +349,11 @@ int main()
 				}
 			}
 			print_output();
+			break;
+		}
+		case Quit: 
+		{
+			run = false;
 			break;
 		}
 
@@ -363,6 +372,6 @@ int main()
 		// 
 		//addclimt
 		//taxsytem
-	} while (true);
+	} while (run);
 	return 0;
 };
