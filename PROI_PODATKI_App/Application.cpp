@@ -330,6 +330,7 @@ int main()
 				size_t id;
 				std::cout << "Podaj id wplywu ktory ma zostac oplacony:\n>";
 				std::cin >> id;
+				handleInputError(std::cin);
 				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore newline
 				try {
 
