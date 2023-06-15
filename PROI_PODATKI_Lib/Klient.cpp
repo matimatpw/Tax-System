@@ -59,8 +59,13 @@ void Client::markPaid(size_t searchID)
 	{
 		if (income.id == searchID)
 		{
-			income.paid = true;
-			break;
+			if (!income.paid)
+			{
+				income.paid = true;
+				break;
+			}
+			else
+				throw std::runtime_error("Tax already paid");
 		}
 	}
 }
