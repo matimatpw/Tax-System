@@ -68,7 +68,13 @@ void TaxSystem::deleteClientByID(size_t searchID)
  
 void TaxSystem::addClient(Client* newClient)
 {
-	clients.push_back(newClient);
+	try {
+		searchByClientID(newClient->getID());
+		throw std::runtime_error("Client of given ID already exists");
+	}
+	catch (std::runtime_error) {
+		clients.push_back(newClient);
+	}
 }
 
 void TaxSystem::writeToFile(std::string path_to_file) const noexcept
