@@ -58,8 +58,9 @@ void TaxSystem::deleteClientByID(size_t searchID)
 		return searchID == client->getID();
 		});
 	if (place != clients.end()) {
-		
+		auto temp = *place;
 		clients.erase(place);
+		delete temp;
 	}
 	else
 		throw std::runtime_error("Client of given ID doesnt exist");

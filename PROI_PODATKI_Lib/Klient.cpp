@@ -122,6 +122,7 @@ void Person::destroyTaxes()
 {
 	for (Tax* tax : person_taxes)
 		delete tax;
+	person_taxes.clear();
 }
 
 void Person::displayInfo(std::ostream& os) const
@@ -170,6 +171,7 @@ void Company::destroyTaxes()
 {
 	for (Tax* tax : company_taxes)
 		delete tax;
+	company_taxes.clear();
 }
 
 Company::~Company()
