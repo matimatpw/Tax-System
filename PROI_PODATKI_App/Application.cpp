@@ -46,21 +46,19 @@ std::ostream& displayClientInfo(std::ostream& os, Client* my_client) {
 	return os;
 }
 
-Client* createClient(int my_choice, size_t& index_XD) {
+Client* createClient(int my_choice, size_t index) {
 	std::string name;
 	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	if (my_choice == 1) {
 		std::cout << "Insert Full Name\n> ";
 		std::getline(std::cin, name);
-		Person* client = new Person(size_t(index_XD),name, {});
-		index_XD++;
+		Person* client = new Person(size_t(index),name, {});
 		return client;
 	}
 	else if (my_choice == 2) {
 		std::cout << "Insert Company Name\n> ";
 		std::getline(std::cin, name);
-		Company* client = new Company(size_t(index_XD),name, {});
-		index_XD++;
+		Company* client = new Company(size_t(index),name, {});
 		return client;
 	}
 	else {
@@ -92,13 +90,12 @@ void handleInputError(std::istream& stream) {
 void print_output() {
 	std::cout << "\nDone :)\n";
 	std::chrono::seconds timer(3);
-	std::this_thread::sleep_for(timer);    //  czysczenie konsoli (czyszczenie 3 sekundy przed)
+	std::this_thread::sleep_for(timer);    //  czysczenie konsoli (czekanie 3 sekundy przed)
 	system("CLS"); // windows
 }
 
 int main()
 {	
-	size_t my_idx = 0; //id of clients (incremented after each AddClient, decrement after each RemoveClient)
 	TaxSystem system;
 	bool is_valid;
 
@@ -121,11 +118,11 @@ int main()
 	//-----
 
 	bool run = true;
+	size_t my_id;
 
 	do {
 		std::cin.clear();
 		is_valid = false;
-		size_t my_id;
 		int choice = 0;
 		std::string input;
 		//TODO ------------------------------------------------------------------------------
@@ -156,22 +153,26 @@ int main()
 		{
 			while (!is_valid)
 			{
-
-
 				try {
 					std::cout << "Company or Person?: \n";
 					std::cout << "1-> Person\n";
 					std::cout << "2-> Company\n> ";
 					std::cin >> choice;
 					handleInputError(std::cin);
-					Client* client = createClient(choice, my_idx);
-					system.addClient(client);
-					std::cout << "This client ID is: " << my_idx - 1 << "";
-					is_valid = true;
 
+					std::cout << "Enter Client ID: \n";
+					std::cin >> my_id;
+
+					handleInputError(std::cin);
+					
+					
+					Client* client = createClient(choice, my_id);
+					system.addClient(client);
+					displayClientInfo(std::cout, client);
+					is_valid = true;
 				}
 				catch (std::invalid_argument e) {
-					std::cout << e.what() << " Input 1 or 2 please" << std::endl;
+					std::cout << e.what() << "\n Incorrect input parameters" << std::endl;
 				}
 				catch (std::runtime_error r) {
 					std::cout << r.what() << std::endl;
@@ -202,7 +203,7 @@ int main()
 		}
 		case AddIncome:
 		{
-			// Wskaznik na podatek przekazywany do konstruktora wplywu, nie tworza sie nowe obietky podatku, wiec nie trzeba ich usuwac
+
 			double my_amount;
 			while (!is_valid) {
 
@@ -361,16 +362,6 @@ int main()
 			std::cout << "> Wrong Option! <\n";
 		}
 		}
-		// Taxsystem X
-		// 
-		// 
-		// 
-		// 
-		// 
-		// 
-		// 
-		//addclimt
-		//taxsytem
 	} while (run);
 	return 0;
 };

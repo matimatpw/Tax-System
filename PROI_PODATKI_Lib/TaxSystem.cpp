@@ -1,19 +1,16 @@
 #include "TaxSystemLib.h"	
 #include <stdexcept>
+#include <iostream>
 
 
  
 TaxSystem::TaxSystem()
 {
-	//Person::initTaxes();
-	//Company::initTaxes();
 }
 
  
 TaxSystem::~TaxSystem()
 {
-	//Person::destroyTaxes();
-	//Company::destroyTaxes();
 	for (Client* client : clients)
 		delete client;
 }
@@ -54,9 +51,7 @@ Client* TaxSystem::searchByClientID(size_t searchID)
  
 void TaxSystem::deleteClientByID(size_t searchID)
 {
-	auto place = std::find_if(clients.begin(), clients.end(), [searchID](Client* client) {
-		return searchID == client->getID();
-		});
+	auto place = std::find_if(clients.begin(), clients.end(), [searchID](Client* client) {return searchID == client->getID();});
 	if (place != clients.end()) {
 		auto temp = *place;
 		clients.erase(place);
@@ -69,11 +64,13 @@ void TaxSystem::deleteClientByID(size_t searchID)
  
 void TaxSystem::addClient(Client* newClient)
 {
+	size_t clientID = newClient->getID();
+	std::cout << clientID << std::endl;
 	try {
-		searchByClientID(newClient->getID());
-		throw std::runtime_error("Client of given ID already exists");
+		Client * client = searchByClientID(clientID);
+		throw std::invalid_argument("Client of given ID already exists");
 	}
-	catch (std::runtime_error) {
+	catch (std::runtime_error e) {
 		clients.push_back(newClient);
 	}
 }
@@ -88,7 +85,6 @@ double TaxSystem::calculateAllTaxes()
 {
 	double sum = 0;
 	for (Client* client : clients)
-		//if ((*client)->cal)
 		sum += (*client).calculateTaxAmount();
 	return sum;
 }

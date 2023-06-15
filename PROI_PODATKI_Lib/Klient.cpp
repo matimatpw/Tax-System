@@ -21,16 +21,6 @@ std::string Client::getName() const noexcept
 	return name;
 }
 
-bool Client::isInIDBase(size_t id) const noexcept
-{
-	for (auto& base_id : ID_base)
-	{
-		if (base_id == id)
-			return true;
-	}
-	return false;
-}
-
 std::vector<Income> Client::getIncomes() const
 {
 	return Incomes;
@@ -81,16 +71,6 @@ bool Client::hasIncome(size_t searchID)
 	}
 	return false;
 }
-
-//void Client::displayInfo(std::ostream& os) const
-//{
-//	
-//}
-
-//std::ostream& Client::readIncome(std::ostream& os)
-//{
-//	return os;
-//}
 
 Person::Person(size_t id, std::string name, std::vector<Income> wplywy_osoby)
 {
@@ -148,7 +128,6 @@ Company::Company(size_t id, std::string name, std::vector<Income> wplywy_firmy)
 		throw std::runtime_error("Name cannot be empty");
 	this->name = name;
 	this->ID = id;
-	/*ID_base.push_back(id);*/
 	this->Incomes = wplywy_firmy;
 
 	if (!(companyCounter++))
@@ -188,10 +167,3 @@ void Company::displayInfo(std::ostream& os) const
 	os << "ID >" << this->getID() << "\n";
 	os << "Income info :" << "\n";
 }
-
-
-//std::ostream& operator<<(std::ostream& os, const Client& my_client)
-//{
-//	my_client.displayInfo(os);
-//	return os;
-//}
