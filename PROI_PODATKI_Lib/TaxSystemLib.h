@@ -21,8 +21,6 @@ public:
 	void deleteClientByID(size_t searchID);
 	void addClient(Client* newClient);
 
-	void writeToFile(std::string path_to_file) const noexcept;
-
 	double calculateAllTaxes();
 };
 

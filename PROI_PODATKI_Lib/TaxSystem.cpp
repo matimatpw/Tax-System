@@ -77,9 +77,6 @@ void TaxSystem::addClient(Client* newClient)
 	}
 }
 
-void TaxSystem::writeToFile(std::string path_to_file) const noexcept
-{
-}
 
 std::vector<Client*> TaxSystem::get_clients_base() const noexcept
 {
