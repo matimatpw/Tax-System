@@ -138,7 +138,6 @@ int main()
 		std::cout << "6 -> Load Clients From Json File \n";
 		std::cout << "7 -> Pay Tax From Income Of Given ID \n";
 		std::cout << "8 ->Quit \n";
-		//std::cout << "9 ->Lobby\n"; //TODO
 		std::cout << "> ";
 		std::cin >> input;
 
@@ -357,7 +356,6 @@ int main()
 			run = false;
 			break;
 		}
-
 		default:
 		{
 			std::cout << "> Wrong Option! <\n";
