@@ -28,7 +28,6 @@ namespace PROIPODATKIUnitTests
 
 		TEST_METHOD(CreatePersonAndAddIncome)
 		{
-			Person::initTaxes();
 			Person p1(21, "xyz");
 			Income new_inc(5000, p1.getTaxes()[pit], 213);
 			Assert::AreEqual(850, new_inc.toPay, 0.01);
@@ -39,7 +38,6 @@ namespace PROIPODATKIUnitTests
 
 		TEST_METHOD(PersonWithMultipleIncomes)
 		{
-			Person::initTaxes();
 			Person p2(22, "lkkl");
 			Income first_inc(5000, p2.getTaxes()[pit], 213);
 			Income sec_inc(20000, p2.getTaxes()[pon], 214);
@@ -50,7 +48,6 @@ namespace PROIPODATKIUnitTests
 
 		TEST_METHOD(CreateCompanyAndAddIncomes)
 		{
-			Company::initTaxes();
 			Company c1(21, "xyz");
 			Income new_inc(5000, c1.getTaxes()[cit], 213);
 			Assert::AreEqual(950, new_inc.toPay, 0.01);
@@ -63,7 +60,6 @@ namespace PROIPODATKIUnitTests
 
 		TEST_METHOD(MarkIncomeAsPaid)
 		{
-			Company::initTaxes();
 			Company c1(21, "xyz");
 			Income new_inc(5000, c1.getTaxes()[cit], 213);
 			c1.addIncome(new_inc);
@@ -81,25 +77,161 @@ namespace PROIPODATKIUnitTests
 
 		TEST_METHOD(CheckWhetherClientHasIncome)
 		{
-			Company::initTaxes();
 			Company c1(21, "xyz");
 			Income new_inc(5000, c1.getTaxes()[cit], 213);
 
 			Assert::IsFalse(c1.hasIncome(213));
 
 			c1.addIncome(new_inc);
-			
+
 			Assert::IsTrue(c1.hasIncome(213));
 
 		}
+		
 	};
-	TEST_CLASS(PROIPODATKIUnitTests)
+	TEST_CLASS(PROITaxSystem)
 	{
 	public:
-		
-		TEST_METHOD(TestMethod1)
+
+		TEST_METHOD(InsertClientStandard)
 		{
+			TaxSystem system;
+			Client* client = new Person(1, "TEST");
+			system.addClient(client);
+
+			Assert::AreEqual(std::string("TEST"), system.get_clients_base()[0]->getName());
 		}
+		TEST_METHOD(InsertClient_ID_AlreadyExists)
+		{
+			TaxSystem system;
+			Client* client = new Person(1, "TEST");
+			system.addClient(client);
+			
+
+			Assert::ExpectException<std::runtime_error>([&system] { Client* sameIDClient = new Person(1, "TEST2"); system.addClient(sameIDClient); });
+		}
+		TEST_METHOD(SearchAfterInit)
+		{
+			TaxSystem system;
+
+			Assert::ExpectException<std::runtime_error>([&system] {system.searchByClientID(0); });
+		}
+		TEST_METHOD(InsertIncomeStandard)
+		{
+			TaxSystem system;
+			Client* client = new Person(1, "Name");
+			system.addClient(client);
+			system.addIncome(1, 120, client->getTaxes()[zusOsoba]);
+
+			Assert::AreEqual(client->getIncomes()[0].amount, double(120));
+			Assert::AreEqual(client->getIncomes()[0].id, size_t(0));
+		}
+		TEST_METHOD(SearchIncomeNotExists)
+		{
+			TaxSystem system;
+			Client* client = new Person(1, "Name");
+			system.addClient(client);
+			system.addIncome(1, 100, client->getTaxes()[zusOsoba]);
+
+			Assert::ExpectException<std::runtime_error>([&system] {system.searchByIncome(1); });
+		}
+		TEST_METHOD(MarkIncomePaidStandard)
+		{
+			TaxSystem system;
+			Client* client = new Person(1, "Name");
+			system.addClient(client);
+			system.addIncome(1, 100, client->getTaxes()[zusOsoba]);
+			system.markPaid(0);
+
+			Assert::AreEqual(client->getIncomes()[0].paid, true);
+		}
+		TEST_METHOD(MarkIncomeNotExists)
+		{
+			TaxSystem system;
+			Client* client = new Person(1, "Name");
+			system.addClient(client);
+			system.addIncome(1, 100, client->getTaxes()[zusOsoba]);
+			
+			
+			Assert::ExpectException<std::runtime_error>([&system] {system.markPaid(1); });
+		}
+		TEST_METHOD(MarkIncomeAlreadyPaid)
+		{
+			TaxSystem system;
+			Client* client = new Person(1, "Name");
+			system.addClient(client);
+			system.addIncome(1, 100, client->getTaxes()[zusOsoba]);
+			system.markPaid(0);
+
+			Assert::ExpectException<std::runtime_error>([&system] {system.markPaid(0); });
+		}
+		TEST_METHOD(SearchClientByIDStandard)
+		{
+			TaxSystem system;
+			Client* client = new Person(420, "TEST");
+			system.addClient(client);
+
+			Client* search = system.searchByClientID(420);
+
+			Assert::AreEqual(client->getName(), search->getName());
+		}
+		TEST_METHOD(SearchClientByIDNotExists)
+		{
+			TaxSystem system;
+			Client* client = new Person(21, "TEST");
+			system.addClient(client);
+
+			Assert::ExpectException<std::runtime_error>([&system] {system.searchByClientID(15); });
+		}
+		TEST_METHOD(SearchClientByIncomeIDStandard)
+		{
+			TaxSystem system;
+			Client* client = new Person(1, "TEST");
+			system.addClient(client);
+			system.addIncome(1, 100, client->getTaxes()[zusOsoba]);
+			
+			Client* search = system.searchByIncome(0);
+
+			Assert::AreEqual(client->getName(), search->getName());
+		}
+		TEST_METHOD(SearchClientByIncomeIDNotExists)
+		{
+			TaxSystem system;
+			Client* client = new Person(1, "TEST");
+			system.addClient(client);
+			system.addIncome(1, 100, client->getTaxes()[zusOsoba]);
+
+			Client* search = system.searchByIncome(0);
+
+			Assert::ExpectException<std::runtime_error>([&system] {system.searchByIncome(15); });
+		}
+		TEST_METHOD(DeleteClientStandard)
+		{
+			TaxSystem system;
+			Client* client = new Person(1, "TEST");
+			system.addClient(client);
+
+			system.deleteClientByID(1);
+			Assert::AreEqual(size_t(0), system.get_clients_base().size());
+
+		}
+		TEST_METHOD(DeleteClientNoID)
+		{
+			TaxSystem system;
+			Client* client = new Person(1, "TEST");
+			system.addClient(client);
+
+			Assert::ExpectException<std::runtime_error>([&system] {system.deleteClientByID(15); });
+		}
+		TEST_METHOD(CalcTaxesOneClientOneIncome)
+		{
+			TaxSystem system;
+			Client* client = new Person(1, "TEST");
+			system.addClient(client);
+			system.addIncome(1, 100, client->getTaxes()[zusOsoba]);
+			//Tax of Zus from 100 - 
+		}
+
 	};
 	TEST_CLASS(PROITax)
 	{
