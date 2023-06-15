@@ -17,11 +17,6 @@ enum companyTaxes
 	zusFirma
 };
 
-//class IOClient {
-//public:
-//	virtual void displayInfo(std::ostream& os)const =0;
-//};
-
 class Client
 {
 protected:
@@ -35,24 +30,17 @@ public:
 	size_t getID() const noexcept;
 	std::string getName() const noexcept;
 	std::vector<Income> getIncomes() const;
-	bool isInIDBase(size_t id) const noexcept;
 	void addIncome(Income const& nowy_wplyw);
 	double calculateTaxAmount() const;
 
 	void markPaid(size_t searchID);
 	bool hasIncome(size_t searchID);
-
-	/*void displayInfo(std::ostream& os) const;*/
-	
-	//friend std::ostream& operator<<(std::ostream& os, const Client& my_client);
-
-	//std::ostream& readIncome(std::ostream& os);
 };
 
 class Person : public Client
 {
 private:
-	static std::vector<Tax*> person_taxes; // Beda odgornie ustalane
+	static std::vector<Tax*> person_taxes; // Odgornie ustalane
 	static size_t personCounter;
 
 public:

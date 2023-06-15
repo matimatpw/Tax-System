@@ -24,7 +24,7 @@ std::string Pit::getName() const noexcept
     return std::string("Pit");
 }
 
-double Cit::operator()(double income) const noexcept//19%
+double Cit::operator()(double income) const noexcept
 {
     return 0.19 * income;
 }
