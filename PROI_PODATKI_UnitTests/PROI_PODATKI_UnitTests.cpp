@@ -223,13 +223,55 @@ namespace PROIPODATKIUnitTests
 
 			Assert::ExpectException<std::runtime_error>([&system] {system.deleteClientByID(15); });
 		}
+		//  For tests to calc Taxes:
+		//	Tax of Cit = 0.19 * income
+		//  Tax of Pit 
+		//  if (income >= 85528) 
+		//		return 0.32 * income;
+		//  else
+		// 		return 0.17 * income;
+		//  Tax of Pon = 0.1 * income
+		//  Tax of Vat = 0.23 * income
 		TEST_METHOD(CalcTaxesOneClientOneIncome)
 		{
 			TaxSystem system;
 			Client* client = new Person(1, "TEST");
 			system.addClient(client);
-			system.addIncome(1, 100, client->getTaxes()[zusOsoba]);
-			//Tax of Zus from 100 - 
+			system.addIncome(1, 100, client->getTaxes()[pit]);
+
+			Assert::AreEqual(double(17), system.calculateAllTaxes());
+		}
+		TEST_METHOD(CalcTaxesOneClientOneIncomePaid)
+		{
+			TaxSystem system;
+			Client* client = new Person(1, "TEST");
+			system.addClient(client);
+			system.addIncome(1, 100, client->getTaxes()[pit]);
+			system.markPaid(0);
+
+			Assert::AreEqual(double(0), system.calculateAllTaxes());
+		}
+		TEST_METHOD(CalcTaxesOneClientTwoIncomes)
+		{
+			TaxSystem system;
+			Client* client = new Person(1, "TEST");
+			system.addClient(client);
+			system.addIncome(1, 100, client->getTaxes()[pit]);
+			system.addIncome(1, 200, client->getTaxes()[pon]);
+
+			Assert::AreEqual(double(37), system.calculateAllTaxes());
+		}
+		TEST_METHOD(CalcTaxesTwoClients)
+		{
+			TaxSystem system;
+			Client* client = new Person(1, "TEST");
+			Client* secondClient = new Company(2, "TEST2");
+			system.addClient(client);
+			system.addClient(secondClient);
+			system.addIncome(1, 100, client->getTaxes()[pit]);
+			system.addIncome(2, 100, secondClient->getTaxes()[vat]);
+
+			Assert::AreEqual(double(40), system.calculateAllTaxes());
 		}
 
 	};
