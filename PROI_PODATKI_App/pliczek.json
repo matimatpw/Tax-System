@@ -1,0 +1,22 @@
+{
+    "Client_ID": {
+        "0": {
+            "info": {
+                "client_type": "company",
+                "Client_Name": "sdkjadas 21",
+                "Client_Incomes": {
+                    "0": {
+                        "amount": 200.0,
+                        "tax": "vat",
+                        "paid": false
+                    },
+                    "1": {
+                        "amount": 100.0,
+                        "tax": "cit",
+                        "paid": true
+                    }
+                }
+            }
+        }
+    }
+}

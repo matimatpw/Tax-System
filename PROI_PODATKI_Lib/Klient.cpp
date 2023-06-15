@@ -47,7 +47,8 @@ double Client::calculateTaxAmount() const
 	double sum = 0;
 	for (auto& income : Incomes)
 	{
-		sum += income.toPay;
+		if (!(income.paid))
+			sum += income.toPay;
 	}
 	return sum;
 }
